@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.container {
+  min-height: 100vh;
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, #1a0b2e 0%, #16051a 50%, #0a0a0a 100%);
+  z-index: -2;
+}
+
+.gridOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 20, 147, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 20, 147, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridPulse 4s ease-in-out infinite;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+.main {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 1;
+}
+
+.hero {
+  text-align: center;
+  position: relative;
+  margin-bottom: 4rem;
+}
+
+.glowEffect {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(255, 20, 147, 0.3) 0%, transparent 70%);
+  filter: blur(60px);
+  animation: glow 3s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+@keyframes glow {
+  from { opacity: 0.7; transform: translate(-50%, -50%) scale(0.8); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+.title {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: transparent;
+  background: linear-gradient(45deg, #ff1493, #ff69b4, #ff20af, #e91e63);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+.titleGlow {
+  text-shadow: 
+    0 0 10px rgba(255, 20, 147, 0.5),
+    0 0 20px rgba(255, 20, 147, 0.3),
+    0 0 40px rgba(255, 20, 147, 0.2);
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.subtitle {
+  font-size: clamp(1.2rem, 4vw, 1.8rem);
+  color: #ff69b4;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
+
+.description {
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  color: #ccc;
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.featureCard {
+  background: rgba(255, 20, 147, 0.05);
+  border: 1px solid rgba(255, 20, 147, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.featureCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 20, 147, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.featureCard:hover::before {
+  left: 100%;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 20, 147, 0.5);
+  box-shadow: 0 10px 30px rgba(255, 20, 147, 0.2);
+}
+
+.featureIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 10px rgba(255, 20, 147, 0.5));
+}
+
+.featureCard h3 {
+  color: #ff69b4;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.featureCard p {
+  color: #aaa;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.button {
+  position: relative;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  min-width: 200px;
+  justify-content: center;
+}
+
+.downloadButton {
+  background: linear-gradient(45deg, #ff1493, #e91e63);
+  color: white;
+  box-shadow: 0 4px 20px rgba(255, 20, 147, 0.3);
+}
+
+.githubButton {
+  background: rgba(255, 20, 147, 0.1);
+  color: #ff69b4;
+  border: 1px solid rgba(255, 20, 147, 0.3);
+}
+
+.discordButton {
+  background: rgba(88, 101, 242, 0.1);
+  color: #5865F2;
+  border: 1px solid rgb(88, 101, 242);
+}
+
+.buttonGlow {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.button:hover .buttonGlow {
+  left: 100%;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.downloadButton:hover {
+  box-shadow: 0 8px 30px rgba(255, 20, 147, 0.5);
+}
+
+.githubButton:hover {
+  background: rgba(255, 20, 147, 0.2);
+  border-color: rgba(255, 20, 147, 0.5);
+  box-shadow: 0 4px 20px rgba(255, 20, 147, 0.2);
+}
+
+.buttonIcon {
+  font-size: 1.2rem;
+}
+
+.warning {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.warningIcon {
+  font-size: 1.5rem;
+  color: #ffc107;
+}
+
+.warning p {
+  color: #ffeb3b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.footer {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .main {
+    padding: 1rem;
+  }
+  
+  .hero {
+    margin-bottom: 2rem;
+  }
+  
+  .features {
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .button {
+    width: 100%;
+  }
+  
+  .stats {
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .statNumber {
+    font-size: 2rem;
+  }
+  
+  .warning {
+    text-align: center;
+  }
+  
+  .footerContent {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .footerLinks {
+    justify-content: center;
+  }
+}
