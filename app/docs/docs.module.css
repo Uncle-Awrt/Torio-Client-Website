@@ -1,0 +1,287 @@
+.page {
+  min-height: 100vh;
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0f0a1a;
+  z-index: -2;
+}
+
+.gridOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(255, 20, 147, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 20, 147, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 6rem;
+}
+
+.pageHeader {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.pageTitle {
+  font-family: 'PoetsenOne', sans-serif;
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  color: transparent;
+  background: linear-gradient(45deg, #ff1493, #ff69b4, #ff20af, #e91e63);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 15px rgba(255, 20, 147, 0.2);
+  margin-bottom: 0.75rem;
+}
+
+.pageSubtitle {
+  color: #c084a0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.tabList {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255, 20, 147, 0.15);
+  padding-bottom: 0.5rem;
+}
+
+.tabButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #8a7a8a;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 0.7rem 1.1rem;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.tabEyebrow {
+  font-family: 'PoetsenOne', sans-serif;
+  font-size: 0.7rem;
+  color: rgba(255, 77, 166, 0.5);
+}
+
+.tabButton:hover {
+  color: #ffffff;
+  background: rgba(255, 20, 147, 0.08);
+}
+
+.tabButton:focus-visible {
+  outline: 2px solid #ff4da6;
+  outline-offset: 2px;
+}
+
+.tabButtonActive {
+  color: #ff4da6;
+  background: rgba(255, 20, 147, 0.1);
+  box-shadow: inset 0 -2px 0 #ff1493;
+}
+
+.panel {
+  animation: fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.content {
+  color: #d8c8d4;
+  line-height: 1.8;
+  font-size: 1.02rem;
+}
+
+.contentHeading {
+  font-family: 'PoetsenOne', sans-serif;
+  font-size: 1.4rem;
+  color: #ff4da6;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.content > .contentHeading:first-child {
+  margin-top: 0;
+}
+
+.content p {
+  margin-bottom: 1rem;
+}
+
+.stepList {
+  list-style: none;
+  counter-reset: step;
+  padding: 0;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.stepList li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 2.75rem;
+}
+
+.stepList li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: rgba(255, 20, 147, 0.12);
+  border: 1px solid rgba(255, 20, 147, 0.4);
+  color: #ff4da6;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepList strong {
+  color: #ffffff;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.stepList p {
+  margin: 0;
+  color: #c8b6c4;
+}
+
+.callout {
+  background: rgba(255, 20, 147, 0.08);
+  border: 1px solid rgba(255, 20, 147, 0.25);
+  border-left: 3px solid #ff1493;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  color: #e8d8e4;
+  font-size: 0.95rem;
+}
+
+.callout strong {
+  color: #ff4da6;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.featureCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 20, 147, 0.15);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.featureCard h3 {
+  color: #ffffff;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.featureCard p {
+  color: #b8a6b4;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.codeBlock {
+  background: #0a0612;
+  border: 1px solid rgba(255, 20, 147, 0.2);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.85rem;
+  color: #e0c8dc;
+  margin: 0.75rem 0 1rem;
+  line-height: 1.6;
+}
+
+.noteSmall {
+  font-size: 0.85rem;
+  color: #8a7a8a;
+  margin-top: -0.5rem;
+}
+
+.licenseBox {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 20, 147, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.25rem 0;
+  font-size: 0.92rem;
+  color: #c8b6c4;
+}
+
+.licenseName {
+  font-family: 'PoetsenOne', sans-serif;
+  color: #ff4da6;
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+}
+
+.footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 640px) {
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+  .tabButton {
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}
