@@ -109,7 +109,7 @@ export default function Home() {
                 <p className={styles.subtitle}>Open Source Ghost Client for Minecraft Bedrock</p>
                 {downloads !== null && (
                   <p className={styles.downloads}>
-                    <img src="/download.svg" alt="" className={styles.downloadsIcon} aria-hidden="true" />
+                    <img src="download.svg" alt="" className={styles.downloadsIcon} aria-hidden="true" />
                     <span>{downloads.toLocaleString()} downloads</span>
                   </p>
                 )}
@@ -189,24 +189,24 @@ export default function Home() {
               <h3 className={styles.screenshotDate}>Snapshots from September 5th</h3>
               <div className={styles.screenshotGrid}>
                 <div className={styles.imageContainer}>
-                  <img src="/Screenshot1.png" alt="Torio Client GUI prototype screen 1 as of September 5th" className={styles.screenshot} />
+                  <img src="Screenshot1.png" alt="Torio Client GUI prototype screen 1 as of September 5th" className={styles.screenshot} />
                 </div>
                 <div className={styles.imageContainer}>
-                  <img src="/Screenshot2.png" alt="Torio Client GUI prototype screen 2 as of September 5th" className={styles.screenshot} />
+                  <img src="Screenshot2.png" alt="Torio Client GUI prototype screen 2 as of September 5th" className={styles.screenshot} />
                 </div>
               </div>
 
               <div className={styles.arrowWrapper}>
-                <img src="/arrow_down.svg" alt="" className={styles.arrowIcon} aria-hidden="true" />
+                <img src="arrow_down.svg" alt="" className={styles.arrowIcon} aria-hidden="true" />
               </div>
 
               <h3 className={styles.screenshotDate}>Current Python GUI Prototype</h3>
               <div className={styles.screenshotGrid}>
                 <div className={styles.imageContainer}>
-                  <img src="/Screenshot3.png" alt="Current Torio Client Python GUI prototype screen 1" className={styles.screenshot} />
+                  <img src="Screenshot3.png" alt="Current Torio Client Python GUI prototype screen 1" className={styles.screenshot} />
                 </div>
                 <div className={styles.imageContainer}>
-                  <img src="/Screenshot4.png" alt="Current Torio Client Python GUI prototype screen 2" className={styles.screenshot} />
+                  <img src="Screenshot4.png" alt="Current Torio Client Python GUI prototype screen 2" className={styles.screenshot} />
                 </div>
               </div>
             </section>
