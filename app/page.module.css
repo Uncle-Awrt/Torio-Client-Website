@@ -195,6 +195,7 @@
   min-width: 160px;
   justify-content: center;
   border: none;
+  font-family: inherit;
 }
 
 .button:hover {
@@ -222,6 +223,61 @@
   background: transparent;
   color: #7289da;
   border: 1px solid #7289da;
+}
+
+.downloadWrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.downloadCaret {
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.downloadMenu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  background: #1a1024;
+  border: 1px solid rgba(255, 20, 147, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+  animation: menuFadeIn 0.15s ease forwards;
+}
+
+@keyframes menuFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.downloadMenuItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  padding: 0.7rem 1rem;
+  text-decoration: none;
+  color: #fff;
+  transition: background 0.15s ease;
+}
+
+.downloadMenuItem:hover,
+.downloadMenuItem:focus-visible {
+  background: rgba(255, 20, 147, 0.15);
+}
+
+.downloadMenuLabel {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.downloadMenuHint {
+  font-size: 0.75rem;
+  color: #c084a0;
 }
 
 .videoSection {
@@ -390,6 +446,10 @@
     width: 100%;
   }
 
+  .downloadWrapper {
+    width: 100%;
+  }
+
   .screenshotGrid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -422,5 +482,8 @@
   .container,
   .loadingScreen.fadeOut {
     animation-duration: 0.01ms !important;
+  }
+  .downloadMenu {
+    animation: none !important;
   }
 }

@@ -7,12 +7,23 @@ import styles from './page.module.css'
 const FALLBACK_DOWNLOADS = 1414
 const REPO_RELEASES_URL = 'https://github.com/Uncle-Awrt/Torio-Client/releases/latest'
 
+type DownloadsJson = {
+  downloads: number
+  latestUrl: string
+  exeUrl: string | null
+  zipUrl: string | null
+  fetchedAt: string
+}
+
 export default function Home() {
   const [displayedText, setDisplayedText] = useState('')
   const [showMainContent, setShowMainContent] = useState(false)
   const [loadingFadeOut, setLoadingFadeOut] = useState(false)
   const [downloads, setDownloads] = useState<number | null>(null)
   const [latestUrl, setLatestUrl] = useState(REPO_RELEASES_URL)
+  const [exeUrl, setExeUrl] = useState<string | null>(null)
+  const [zipUrl, setZipUrl] = useState<string | null>(null)
+  const [isDownloadMenuOpen, setIsDownloadMenuOpen] = useState(false)
   const [scrollY, setScrollY] = useState(0)
 
   const fullText = 'Torio Client'
@@ -43,20 +54,21 @@ export default function Home() {
 
   useEffect(() => {
     let cancelled = false
-
-    fetch('/api/downloads')
+    fetch('/downloads.json')
       .then((res) => {
-        if (!res.ok) throw new Error(`API returned ${res.status}`)
+        if (!res.ok) throw new Error(`downloads.json returned ${res.status}`)
         return res.json()
       })
-      .then((data) => {
+      .then((data: DownloadsJson) => {
         if (cancelled) return
         if (typeof data.downloads === 'number') setDownloads(data.downloads)
         if (typeof data.latestUrl === 'string' && data.latestUrl) setLatestUrl(data.latestUrl)
+        setExeUrl(data.exeUrl ?? null)
+        setZipUrl(data.zipUrl ?? null)
       })
       .catch((err) => {
         if (cancelled) return
-        console.error('Failed to fetch download stats:', err)
+        console.error('Failed to fetch downloads.json:', err)
         setDownloads(FALLBACK_DOWNLOADS)
       })
 
@@ -70,6 +82,20 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    if (!isDownloadMenuOpen) return
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (!target.closest(`.${styles.downloadWrapper}`)) {
+        setIsDownloadMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isDownloadMenuOpen])
 
   const gridOpacity = Math.max(0, 1 - scrollY / 500)
 
@@ -109,23 +135,62 @@ export default function Home() {
                 <p className={styles.subtitle}>Open Source Ghost Client for Minecraft Bedrock</p>
                 {downloads !== null && (
                   <p className={styles.downloads}>
-                    <img src="download.svg" alt="" className={styles.downloadsIcon} aria-hidden="true" />
+                    <img src="/download.svg" alt="" className={styles.downloadsIcon} aria-hidden="true" />
                     <span>{downloads.toLocaleString()} downloads</span>
                   </p>
                 )}
               </section>
 
               <section className={styles.actions} aria-label="Primary actions">
-                <a href={latestUrl} className={`${styles.button} ${styles.downloadButton}`}>
-                  Download
-                </a>
+                <div className={styles.downloadWrapper}>
+                  {(exeUrl && zipUrl) ? (
+                    <>
+                      <button
+                        type="button"
+                        className={`${styles.button} ${styles.downloadButton}`}
+                        onClick={() => setIsDownloadMenuOpen((open) => !open)}
+                        aria-haspopup="true"
+                        aria-expanded={isDownloadMenuOpen}
+                      >
+                        Download
+                        <span className={styles.downloadCaret} aria-hidden="true">▾</span>
+                      </button>
+                      {isDownloadMenuOpen && (
+                        <div className={styles.downloadMenu} role="menu">
+                          <a
+                            href={exeUrl}
+                            className={styles.downloadMenuItem}
+                            role="menuitem"
+                            onClick={() => setIsDownloadMenuOpen(false)}
+                          >
+                            <span className={styles.downloadMenuLabel}>.exe</span>
+                            <span className={styles.downloadMenuHint}>Windows installer</span>
+                          </a>
+                          <a
+                            href={zipUrl}
+                            className={styles.downloadMenuItem}
+                            role="menuitem"
+                            onClick={() => setIsDownloadMenuOpen(false)}
+                          >
+                            <span className={styles.downloadMenuLabel}>.zip</span>
+                            <span className={styles.downloadMenuHint}>Portable archive</span>
+                          </a>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <a href={latestUrl} className={`${styles.button} ${styles.downloadButton}`}>
+                      Download
+                    </a>
+                  )}
+                </div>
                 <a
-                  href="https://github.com/kukentyan/torio-master-wpf"
+                  href="https://github.com/Uncle-Awrt/Torio-Client"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`${styles.button} ${styles.githubButton}`}
                 >
-                  Source Code
+                  GitHub
                 </a>
                 <a
                   href="https://discord.gg/xq8sWQhuXG"
@@ -189,24 +254,24 @@ export default function Home() {
               <h3 className={styles.screenshotDate}>Snapshots from September 5th</h3>
               <div className={styles.screenshotGrid}>
                 <div className={styles.imageContainer}>
-                  <img src="Screenshot1.png" alt="Torio Client GUI prototype screen 1 as of September 5th" className={styles.screenshot} />
+                  <img src="/Screenshot1.png" alt="Torio Client GUI prototype screen 1 as of September 5th" className={styles.screenshot} />
                 </div>
                 <div className={styles.imageContainer}>
-                  <img src="Screenshot2.png" alt="Torio Client GUI prototype screen 2 as of September 5th" className={styles.screenshot} />
+                  <img src="/Screenshot2.png" alt="Torio Client GUI prototype screen 2 as of September 5th" className={styles.screenshot} />
                 </div>
               </div>
 
               <div className={styles.arrowWrapper}>
-                <img src="arrow_down.svg" alt="" className={styles.arrowIcon} aria-hidden="true" />
+                <img src="/arrow_down.svg" alt="" className={styles.arrowIcon} aria-hidden="true" />
               </div>
 
               <h3 className={styles.screenshotDate}>Current Python GUI Prototype</h3>
               <div className={styles.screenshotGrid}>
                 <div className={styles.imageContainer}>
-                  <img src="Screenshot3.png" alt="Current Torio Client Python GUI prototype screen 1" className={styles.screenshot} />
+                  <img src="/Screenshot3.png" alt="Current Torio Client Python GUI prototype screen 1" className={styles.screenshot} />
                 </div>
                 <div className={styles.imageContainer}>
-                  <img src="Screenshot4.png" alt="Current Torio Client Python GUI prototype screen 2" className={styles.screenshot} />
+                  <img src="/Screenshot4.png" alt="Current Torio Client Python GUI prototype screen 2" className={styles.screenshot} />
                 </div>
               </div>
             </section>

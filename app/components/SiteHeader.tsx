@@ -6,7 +6,7 @@ import styles from './SiteHeader.module.css'
 
 const NAV_ITEMS = [
   { href: '/', label: 'Home' },
-  { href: '/docs', label: 'Documentation' }, // または 'Documentation'
+  { href: '/docs', label: 'Documentation' },
 ]
 
 export default function SiteHeader() {
