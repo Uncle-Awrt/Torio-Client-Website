@@ -133,7 +133,7 @@ export default function Home() {
                             onClick={() => setIsDownloadMenuOpen(false)}
                           >
                             <span className={styles.downloadMenuLabel}>.exe</span>
-                            <span className={styles.downloadMenuHint}>Windows installer</span>
+                            <span className={styles.downloadMenuHint}>Windows standalone</span>
                           </a>
                           <a
                             href={zipUrl}
