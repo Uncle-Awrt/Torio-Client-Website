@@ -45,10 +45,10 @@ async function main() {
     fetchedAt: new Date().toISOString(),
   }
 
-  mkdirSync('public', { recursive: true })
-  writeFileSync('public/downloads.json', JSON.stringify(payload, null, 2) + '\n')
+  mkdirSync('data', { recursive: true })
+  writeFileSync('data/downloads.json', JSON.stringify(payload, null, 2) + '\n')
 
-  console.log('Wrote public/downloads.json:', payload)
+  console.log('Wrote data/downloads.json:', payload)
 }
 
 main().catch((err) => {

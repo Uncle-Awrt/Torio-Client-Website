@@ -3,26 +3,21 @@
 import { useState, useEffect } from 'react'
 import SiteHeader from './components/SiteHeader'
 import styles from './page.module.css'
+import downloadsData from '../data/downloads.json'
 
 const FALLBACK_DOWNLOADS = 1414
 const REPO_RELEASES_URL = 'https://github.com/Uncle-Awrt/Torio-Client/releases/latest'
-
-type DownloadsJson = {
-  downloads: number
-  latestUrl: string
-  exeUrl: string | null
-  zipUrl: string | null
-  fetchedAt: string
-}
 
 export default function Home() {
   const [displayedText, setDisplayedText] = useState('')
   const [showMainContent, setShowMainContent] = useState(false)
   const [loadingFadeOut, setLoadingFadeOut] = useState(false)
-  const [downloads, setDownloads] = useState<number | null>(null)
-  const [latestUrl, setLatestUrl] = useState(REPO_RELEASES_URL)
-  const [exeUrl, setExeUrl] = useState<string | null>(null)
-  const [zipUrl, setZipUrl] = useState<string | null>(null)
+
+  const downloads = downloadsData.downloads ?? FALLBACK_DOWNLOADS
+  const latestUrl = downloadsData.latestUrl || REPO_RELEASES_URL
+  const exeUrl = downloadsData.exeUrl ?? null
+  const zipUrl = downloadsData.zipUrl ?? null
+
   const [isDownloadMenuOpen, setIsDownloadMenuOpen] = useState(false)
   const [scrollY, setScrollY] = useState(0)
 
@@ -50,31 +45,6 @@ export default function Home() {
       }
     }, 100)
     return () => clearInterval(interval)
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
-    fetch('/downloads.json')
-      .then((res) => {
-        if (!res.ok) throw new Error(`downloads.json returned ${res.status}`)
-        return res.json()
-      })
-      .then((data: DownloadsJson) => {
-        if (cancelled) return
-        if (typeof data.downloads === 'number') setDownloads(data.downloads)
-        if (typeof data.latestUrl === 'string' && data.latestUrl) setLatestUrl(data.latestUrl)
-        setExeUrl(data.exeUrl ?? null)
-        setZipUrl(data.zipUrl ?? null)
-      })
-      .catch((err) => {
-        if (cancelled) return
-        console.error('Failed to fetch downloads.json:', err)
-        setDownloads(FALLBACK_DOWNLOADS)
-      })
-
-    return () => {
-      cancelled = true
-    }
   }, [])
 
   useEffect(() => {
@@ -133,12 +103,10 @@ export default function Home() {
                   <span className={styles.titleGlow}>Torio Client</span>
                 </h1>
                 <p className={styles.subtitle}>Open Source Ghost Client for Minecraft Bedrock</p>
-                {downloads !== null && (
-                  <p className={styles.downloads}>
-                    <img src="download.svg" alt="" className={styles.downloadsIcon} aria-hidden="true" />
-                    <span>{downloads.toLocaleString()} downloads</span>
-                  </p>
-                )}
+                <p className={styles.downloads}>
+                  <img src="/download.svg" alt="" className={styles.downloadsIcon} aria-hidden="true" />
+                  <span>{downloads.toLocaleString()} downloads</span>
+                </p>
               </section>
 
               <section className={styles.actions} aria-label="Primary actions">
@@ -159,6 +127,7 @@ export default function Home() {
                         <div className={styles.downloadMenu} role="menu">
                           <a
                             href={exeUrl}
+                            download
                             className={styles.downloadMenuItem}
                             role="menuitem"
                             onClick={() => setIsDownloadMenuOpen(false)}
@@ -168,6 +137,7 @@ export default function Home() {
                           </a>
                           <a
                             href={zipUrl}
+                            download
                             className={styles.downloadMenuItem}
                             role="menuitem"
                             onClick={() => setIsDownloadMenuOpen(false)}
@@ -254,24 +224,24 @@ export default function Home() {
               <h3 className={styles.screenshotDate}>Snapshots from September 5th</h3>
               <div className={styles.screenshotGrid}>
                 <div className={styles.imageContainer}>
-                  <img src="Screenshot1.png" alt="Torio Client GUI prototype screen 1 as of September 5th" className={styles.screenshot} />
+                  <img src="/Screenshot1.png" alt="Torio Client GUI prototype screen 1 as of September 5th" className={styles.screenshot} />
                 </div>
                 <div className={styles.imageContainer}>
-                  <img src="Screenshot2.png" alt="Torio Client GUI prototype screen 2 as of September 5th" className={styles.screenshot} />
+                  <img src="/Screenshot2.png" alt="Torio Client GUI prototype screen 2 as of September 5th" className={styles.screenshot} />
                 </div>
               </div>
 
               <div className={styles.arrowWrapper}>
-                <img src="arrow_down.svg" alt="" className={styles.arrowIcon} aria-hidden="true" />
+                <img src="/arrow_down.svg" alt="" className={styles.arrowIcon} aria-hidden="true" />
               </div>
 
               <h3 className={styles.screenshotDate}>Current Python GUI Prototype</h3>
               <div className={styles.screenshotGrid}>
                 <div className={styles.imageContainer}>
-                  <img src="Screenshot3.png" alt="Current Torio Client Python GUI prototype screen 1" className={styles.screenshot} />
+                  <img src="/Screenshot3.png" alt="Current Torio Client Python GUI prototype screen 1" className={styles.screenshot} />
                 </div>
                 <div className={styles.imageContainer}>
-                  <img src="Screenshot4.png" alt="Current Torio Client Python GUI prototype screen 2" className={styles.screenshot} />
+                  <img src="/Screenshot4.png" alt="Current Torio Client Python GUI prototype screen 2" className={styles.screenshot} />
                 </div>
               </div>
             </section>
