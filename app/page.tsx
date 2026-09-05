@@ -221,7 +221,7 @@ export default function Home() {
                   <div className={styles.guiImageWrapper}>
                     <span className={styles.guiCardBadge}>In-Game GUI</span>
                     <img
-                      src="/images/v2_ingame_gui.png"
+                      src="v2_ingame_gui.png"
                       alt="Torio Client V2 In-Game Overlay GUI"
                       className={styles.guiImage}
                     />
@@ -238,7 +238,7 @@ export default function Home() {
                   <div className={styles.guiImageWrapper}>
                     <span className={styles.guiCardBadge}>External GUI</span>
                     <img
-                      src="/images/v2_external_gui.png"
+                      src="v2_external_gui.png"
                       alt="Torio Client V2 External Window GUI"
                       className={styles.guiImage}
                     />
