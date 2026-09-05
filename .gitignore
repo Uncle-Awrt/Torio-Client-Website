@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# docs internal content & compilation scripts (local only, do not publish to github)
+/docs-content/
+/data/compiled-docs.json
+/scripts/compile-docs.mjs
+/scripts/generate-default-docs.mjs

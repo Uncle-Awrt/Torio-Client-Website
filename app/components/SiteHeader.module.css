@@ -10,17 +10,18 @@
 }
 
 .inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 1rem 1.5rem;
+  width: 100%;
+  padding: 1rem 2.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .brand {
-  font-family: 'PoetsenOne', sans-serif;
-  font-size: 1.3rem;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: #ff4da6;
   text-decoration: none;
   text-shadow: 0 0 12px rgba(255, 20, 147, 0.25);

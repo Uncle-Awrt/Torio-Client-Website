@@ -1,12 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-@font-face {
-  font-family: 'PoetsenOne';
-  src: url('/fonts/PoetsenOne-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-display: swap;
-}
-
 .visuallyHidden {
   position: absolute;
   width: 1px;
@@ -41,8 +34,13 @@
   to   { opacity: 0; }
 }
 
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
 .loadingTitle {
-  font-family: 'PoetsenOne', cursive;
+  font-family: var(--font-poetsen-one), sans-serif;
   font-size: clamp(4rem, 10vw, 8rem);
   font-weight: 700;
   color: transparent;
@@ -127,18 +125,13 @@
   background-clip: text;
   animation: gradientShift 3s ease-in-out infinite;
   margin-bottom: 1rem;
-  font-family: 'PoetsenOne', sans-serif;
+  font-family: var(--font-poetsen-one), sans-serif;
 }
 
 .titleGlow {
   text-shadow:
     0 0 8px rgba(255, 20, 147, 0.3),
     0 0 20px rgba(255, 20, 147, 0.1);
-}
-
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
 }
 
 .cursor {
@@ -292,7 +285,7 @@
 }
 
 .sectionTitle {
-  font-family: 'PoetsenOne', sans-serif;
+  font-family: var(--font-poetsen-one), sans-serif;
   font-size: 2.5rem;
   color: #ff4da6;
   text-align: center;
@@ -356,7 +349,7 @@
 
 .screenshotDate {
   color: #ff4da6;
-  font-family: 'PoetsenOne', sans-serif;
+  font-family: var(--font-poetsen-one), sans-serif;
   font-size: 1.4rem;
   margin-bottom: 2rem;
   text-align: center;
@@ -381,9 +374,8 @@
 }
 
 .imageContainer:hover {
-  transform: translateY(-5px) scale(1.02);
-  border-color: rgba(255, 20, 147, 0.5);
-  box-shadow: 0 20px 50px rgba(255, 20, 147, 0.15);
+  border-color: rgba(255, 20, 147, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
 .screenshot {
@@ -401,13 +393,6 @@
 .arrowIcon {
   width: 50px;
   height: 50px;
-  filter: drop-shadow(0 0 8px rgba(255, 20, 147, 0.4));
-  animation: bounce 2s infinite ease-in-out;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
 }
 
 .footer {
@@ -487,3 +472,257 @@
     animation: none !important;
   }
 }
+
+.guideSection {
+  width: 100%;
+  max-width: 900px;
+  margin-top: 80px;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.guideIntro {
+  color: #c084a0;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  text-align: center;
+  max-width: 680px;
+  margin-bottom: 2.5rem;
+}
+
+.stepGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.stepCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 20, 147, 0.15);
+  border-radius: 16px;
+  padding: 2rem 1.5rem 1.5rem;
+  position: relative;
+  backdrop-filter: blur(8px);
+}
+
+.stepCard:hover {
+  border-color: rgba(255, 20, 147, 0.3);
+}
+
+.stepBadge {
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  background: #cc1070;
+  color: #fff;
+  font-family: var(--font-poetsen-one), sans-serif;
+  font-size: 0.9rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+.stepCard h3 {
+  font-family: var(--font-poetsen-one), sans-serif;
+  color: #ffffff;
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.stepCard p {
+  color: #c084a0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.troubleCallout {
+  width: 100%;
+  background: rgba(255, 20, 147, 0.05);
+  border: 1px solid rgba(255, 20, 147, 0.25);
+  border-left: 4px solid #ff1493;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  margin-top: 1rem;
+}
+
+.troubleCallout h3 {
+  font-family: var(--font-poetsen-one), sans-serif;
+  color: #ff4da6;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.troubleCallout p {
+  color: #e8d8e4;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.discordLink {
+  color: #7289da;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.discordLink:hover {
+  color: #8ea1e1;
+}
+
+@media (max-width: 768px) {
+  .stepGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .guideSection {
+    margin-top: 60px;
+  }
+  .guiGrid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+  .guiSection,
+  .devlogSection {
+    margin-top: 60px;
+  }
+}
+
+.guiSection {
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 100px;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sectionSubtitle {
+  color: #e8d8e4;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  text-align: center;
+  max-width: 750px;
+  margin-bottom: 2.5rem;
+}
+
+.sectionSubtitle span {
+  display: block;
+  font-size: 0.95rem;
+  color: #c084a0;
+  margin-top: 0.35rem;
+}
+
+.guiGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  width: 100%;
+}
+
+.guiCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 20, 147, 0.2);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(8px);
+}
+
+.guiCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 20, 147, 0.5);
+  box-shadow: 0 20px 45px rgba(255, 20, 147, 0.15);
+}
+
+.guiImageWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+
+.guiImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.guiCard:hover .guiImage {
+  transform: scale(1.03);
+}
+
+.guiCardBadge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(204, 16, 112, 0.9);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-family: var(--font-poetsen-one), sans-serif;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+}
+
+.guiCardContent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.guiCardTitle {
+  font-family: var(--font-poetsen-one), sans-serif;
+  color: #ffffff;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.guiCardDescription {
+  color: #c084a0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.devlogSection {
+  width: 100%;
+  max-width: 900px;
+  margin-top: 100px;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.devlogSubtitle {
+  color: #c084a0;
+  font-size: 1.05rem;
+  text-align: center;
+  max-width: 680px;
+  margin-top: -1rem;
+}
+
+.devlogNote {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #c084a0;
+  margin-top: 0.35rem;
+}

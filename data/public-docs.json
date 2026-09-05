@@ -1,0 +1,278 @@
+{
+  "general": [
+    {
+      "id": "DeveloperDocs",
+      "name": "Developer Documentation",
+      "description": "Welcome to the Torio Client developer documentation. This section covers the internal memory architecture, scanning routines, and injection frameworks used in the WPF client.",
+      "content": ""
+    },
+    {
+      "id": "License",
+      "name": "License & Credits",
+      "description": "Torio Client is released as open-source software under the terms detailed below. Please refer to the official `LICENSE` file in the repository for the full legal text.",
+      "content": ""
+    },
+    {
+      "id": "MemoryScanner",
+      "name": "Memory Scanner Architecture",
+      "description": "The core subsystem responsible for reading and analyzing the game process memory. It detects game state changes such as World Entry/Exit and Menu states by scanning for specific Array of Bytes (AOB) signatures.",
+      "content": ""
+    }
+  ],
+  "visual": [
+    {
+      "id": "ESP",
+      "name": "ESP",
+      "description": "Draws 2D bounding boxes and health bars around other players through walls.",
+      "content": ""
+    },
+    {
+      "id": "Coordinates",
+      "name": "Force Show Coordinates",
+      "description": "Enables coordinate HUD display by rewriting local player settings state in memory.",
+      "content": ""
+    },
+    {
+      "id": "Fullbright",
+      "name": "Fullbright",
+      "description": "Instantly increases game brightness to maximum level, removing dark areas and shadows.",
+      "content": ""
+    },
+    {
+      "id": "TimeChanger",
+      "name": "Time Changer",
+      "description": "Changes client-side game time to any hour of the day.",
+      "content": ""
+    },
+    {
+      "id": "TrueSight",
+      "name": "True Sight",
+      "description": "Reveals invisible entities (like players under invisibility potion status or spectating admins).",
+      "content": ""
+    },
+    {
+      "id": "Zoom",
+      "name": "Zoom",
+      "description": "Adjusts camera Field of View (FOV) state dynamically, acting as a tactical telescope.",
+      "content": ""
+    }
+  ],
+  "combat": [
+    {
+      "id": "AimAssist",
+      "name": "Aim Assist",
+      "description": "Smoothly guides your crosshair towards nearby players to improve target tracking and landing hits.",
+      "content": ""
+    },
+    {
+      "id": "Autoclicker",
+      "name": "Auto Clicker",
+      "description": "Automates clicking at high rates for both left and right mouse buttons.",
+      "content": ""
+    },
+    {
+      "id": "BackTrack",
+      "name": "Back Track",
+      "description": "Delays player position updates, allowing you to hit their past positions (ticks backtrack).",
+      "content": ""
+    },
+    {
+      "id": "DoubleClicker",
+      "name": "Double Clicker",
+      "description": "Injects secondary mouse clicks on left-button triggers to increase PVP click-rates.",
+      "content": ""
+    },
+    {
+      "id": "FakeLag",
+      "name": "Fake Lag",
+      "description": "Delays outgoing network packets to simulate high ping, throwing off opponents tracking.",
+      "content": ""
+    },
+    {
+      "id": "Hitbox",
+      "name": "Hitbox",
+      "description": "Expands the physical size of enemy hitboxes in memory, allowing you to land attacks from wider angles.",
+      "content": ""
+    },
+    {
+      "id": "Reach",
+      "name": "Reach",
+      "description": "Extends your maximum attack range in memory, allowing you to strike players from further away.",
+      "content": ""
+    },
+    {
+      "id": "StickyAim",
+      "name": "Sticky Aim",
+      "description": "Locks your crosshair rotation tracking to the closest player hitbox in range.",
+      "content": ""
+    },
+    {
+      "id": "TriggerBot",
+      "name": "Trigger Bot",
+      "description": "Automatically triggers an attack the exact millisecond your crosshair passes over an enemy entity.",
+      "content": ""
+    }
+  ],
+  "movement": [
+    {
+      "id": "AirAcceleration",
+      "name": "Air Acceleration",
+      "description": "Enhances horizontal strafe control and air speed when jumping.",
+      "content": ""
+    },
+    {
+      "id": "JumpReset",
+      "name": "Jump Reset",
+      "description": "Simulates high-velocity downward momentum the moment you take damage, resetting your knockback instantly.",
+      "content": ""
+    },
+    {
+      "id": "LagSwitch",
+      "name": "Lag Switch",
+      "description": "Manually toggles packet transmission updates to simulate sudden server latency spikes.",
+      "content": ""
+    },
+    {
+      "id": "Sprint",
+      "name": "Sprint",
+      "description": "Forces your player entity to maintain sprinting speed in all directions.",
+      "content": ""
+    },
+    {
+      "id": "Timer",
+      "name": "Timer",
+      "description": "Speeds up or slows down the game tick rate client-side.",
+      "content": ""
+    },
+    {
+      "id": "Velocity",
+      "name": "Velocity",
+      "description": "Scales the knockback velocity received from attacks and environmental hazards.",
+      "content": ""
+    }
+  ],
+  "utility": [
+    {
+      "id": "ArrayList",
+      "name": "Array List",
+      "description": "Displays a real-time list of all active modules on your HUD.",
+      "content": ""
+    },
+    {
+      "id": "Auto360",
+      "name": "Auto 360",
+      "description": "Triggers a rapid 360-degree spin of your camera with a single keybind.",
+      "content": ""
+    },
+    {
+      "id": "AutoBow",
+      "name": "Auto Bow",
+      "description": "Automatically draws and releases bows at the perfect timing for maximum damage.",
+      "content": ""
+    },
+    {
+      "id": "AutoThrow",
+      "name": "Auto Throw",
+      "description": "Throws projectiles (pearls, eggs, snowballs, potions) at rapid-fire speed.",
+      "content": ""
+    },
+    {
+      "id": "CustomWatermark",
+      "name": "Custom Watermark",
+      "description": "Replaces the default overlay text with a customized client name and styling.",
+      "content": ""
+    },
+    {
+      "id": "DiscordPresence",
+      "name": "Discord Rich Presence",
+      "description": "Displays customized Torio Client details on your Discord profile status.",
+      "content": ""
+    },
+    {
+      "id": "DuckOverlay",
+      "name": "Duck Overlay",
+      "description": "Draws a cute animated duck mascot on your screen.",
+      "content": ""
+    },
+    {
+      "id": "FastItem",
+      "name": "Fast Item",
+      "description": "Spams usage of items (like eating food or drinking potions) in a fraction of the normal time.",
+      "content": ""
+    },
+    {
+      "id": "GuiTheme",
+      "name": "GUI Theme",
+      "description": "Customizes colors, glows, transparency, and style of the client overlay and menus.",
+      "content": ""
+    },
+    {
+      "id": "Streamprotect",
+      "name": "Stream Protect",
+      "description": "Hides all client HUD elements, overlays, and GUI windows from capture programs.",
+      "content": ""
+    },
+    {
+      "id": "Systemtray",
+      "name": "System Tray",
+      "description": "Minimizes the WPF application into the Windows system tray instead of the taskbar.",
+      "content": ""
+    }
+  ],
+  "core": [
+    {
+      "id": "AimDetector",
+      "name": "Aim Detector",
+      "description": "Captures and monitors target aiming states, updating crosshair alignment variables.",
+      "content": ""
+    },
+    {
+      "id": "BlockBreakDetector",
+      "name": "Block Break Detector",
+      "description": "Monitors block mining state variables to dynamically pause click simulations when breaking structures.",
+      "content": ""
+    },
+    {
+      "id": "LocalPlayerCoordinates",
+      "name": "Local Player Coordinates",
+      "description": "Monitors spatial parameters of the local player head to construct crosshair ray-casting lines.",
+      "content": ""
+    },
+    {
+      "id": "MenuMonitor",
+      "name": "Menu Monitor",
+      "description": "Monitors user menu states to pause active click features when settings or inventory containers are open.",
+      "content": ""
+    },
+    {
+      "id": "MinecraftProcessMonitor",
+      "name": "Minecraft Process Monitor",
+      "description": "Runs polling cycles checking process active handles to control startup hooks and memory scans.",
+      "content": ""
+    },
+    {
+      "id": "MinecraftWindowMonitor",
+      "name": "Minecraft Window Monitor",
+      "description": "Tracks window focus and size alignments, synchronizing WPF overlay windows to game positions.",
+      "content": ""
+    },
+    {
+      "id": "PlayerDamageMonitor",
+      "name": "Player Damage Monitor",
+      "description": "Monitors damage ticks to trigger Jump Reset knockback recovery loops.",
+      "content": ""
+    },
+    {
+      "id": "RotationCalculations",
+      "name": "Rotation & Angle Calculations",
+      "description": "The mathematical trigonometry system responsible for computing targeted yaw and pitch angles relative to enemy entities.",
+      "content": ""
+    },
+    {
+      "id": "WorldStatus",
+      "name": "World Status Monitor",
+      "description": "Monitors player session updates to set target context during world entries and exits.",
+      "content": ""
+    }
+  ]
+}

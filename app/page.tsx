@@ -8,10 +8,12 @@ import downloadsData from '../data/downloads.json'
 const FALLBACK_DOWNLOADS = 1414
 const REPO_RELEASES_URL = 'https://github.com/Uncle-Awrt/Torio-Client/releases/latest'
 
+let hasLoadedGlobal = false
+
 export default function Home() {
-  const [displayedText, setDisplayedText] = useState('')
-  const [showMainContent, setShowMainContent] = useState(false)
-  const [loadingFadeOut, setLoadingFadeOut] = useState(false)
+  const [displayedText, setDisplayedText] = useState(hasLoadedGlobal ? 'Torio Client' : '')
+  const [showMainContent, setShowMainContent] = useState(hasLoadedGlobal)
+  const [loadingFadeOut, setLoadingFadeOut] = useState(hasLoadedGlobal)
 
   const downloads = downloadsData.downloads ?? FALLBACK_DOWNLOADS
   const latestUrl = downloadsData.latestUrl || REPO_RELEASES_URL
@@ -24,12 +26,15 @@ export default function Home() {
   const fullText = 'Torio Client'
 
   useEffect(() => {
+    if (hasLoadedGlobal) return
+
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (prefersReducedMotion) {
       setDisplayedText(fullText)
       setLoadingFadeOut(true)
       setShowMainContent(true)
+      hasLoadedGlobal = true
       return
     }
 
@@ -40,6 +45,7 @@ export default function Home() {
         currentIndex++
       } else {
         clearInterval(interval)
+        hasLoadedGlobal = true
         setTimeout(() => setLoadingFadeOut(true), 500)
         setTimeout(() => setShowMainContent(true), 1500)
       }
@@ -172,6 +178,102 @@ export default function Home() {
                 </a>
               </section>
             </div>
+
+            <section className={styles.guideSection} aria-labelledby="guide-heading">
+              <h2 id="guide-heading" className={styles.sectionTitle}>User Guide</h2>
+
+              <div className={styles.stepGrid}>
+                <div className={styles.stepCard}>
+                  <div className={styles.stepBadge}>01</div>
+                  <h3>Download</h3>
+                  <p>Download the latest client release.</p>
+                </div>
+                <div className={styles.stepCard}>
+                  <div className={styles.stepBadge}>02</div>
+                  <h3>Launch</h3>
+                  <p>Open Minecraft, then run the client.</p>
+                </div>
+                <div className={styles.stepCard}>
+                  <div className={styles.stepBadge}>03</div>
+                  <h3>Config</h3>
+                  <p>Configure settings using the client GUI.</p>
+                </div>
+              </div>
+
+              <div className={styles.troubleCallout}>
+                <h3>Troubleshooting</h3>
+                <p>
+                  If you experience issues such as the client not launching or behaving strangely,
+                  first ensure you are using the latest version. If the problem persists, please report it in our
+                  <a href="https://discord.gg/xq8sWQhuXG" target="_blank" rel="noopener noreferrer" className={styles.discordLink}> Discord server</a>.
+                </p>
+              </div>
+            </section>
+
+            <section className={styles.guiSection} aria-labelledby="gui-heading">
+              <h2 id="gui-heading" className={styles.sectionTitle}>Dual GUI Modes</h2>
+              <p className={styles.sectionSubtitle}>
+                Torio Client V2 allows you to seamlessly switch between an in-game overlay and an external desktop GUI to fit your playstyle.
+              </p>
+
+              <div className={styles.guiGrid}>
+                <div className={styles.guiCard}>
+                  <div className={styles.guiImageWrapper}>
+                    <span className={styles.guiCardBadge}>In-Game GUI</span>
+                    <img
+                      src="/images/v2_ingame_gui.png"
+                      alt="Torio Client V2 In-Game Overlay GUI"
+                      className={styles.guiImage}
+                    />
+                  </div>
+                  <div className={styles.guiCardContent}>
+                    <h3 className={styles.guiCardTitle}>In-Game Overlay GUI</h3>
+                    <p className={styles.guiCardDescription}>
+                      Built for players who prefer configuring settings directly in-game. Features an external in-game overlay with stream-proof protection that prevents the GUI from being captured in screen shares or recordings.
+                    </p>
+                  </div>
+                </div>
+
+                <div className={styles.guiCard}>
+                  <div className={styles.guiImageWrapper}>
+                    <span className={styles.guiCardBadge}>External GUI</span>
+                    <img
+                      src="/images/v2_external_gui.png"
+                      alt="Torio Client V2 External Window GUI"
+                      className={styles.guiImage}
+                    />
+                  </div>
+                  <div className={styles.guiCardContent}>
+                    <h3 className={styles.guiCardTitle}>External Window GUI</h3>
+                    <p className={styles.guiCardDescription}>
+                      Easily configure and customize your client and module settings from an external window outside of the game.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className={styles.devlogSection} aria-labelledby="devlog-heading">
+              <h2 id="devlog-heading" className={styles.sectionTitle}>
+                Latest Devlog <span className={styles.devlogNote}>(In Development · Not Public Yet)</span>
+              </h2>
+              <p className={styles.devlogSubtitle}>
+                Watch the latest development showcase and see new upcoming features in action.
+              </p>
+              <div className={styles.videoContainer}>
+                <div className={styles.videoWrapper}>
+                  <iframe
+                    width="560"
+                    height="315"
+                    src="https://www.youtube.com/embed/NozHpYcHyUE?si=JlDjcFAnEzCnOB36"
+                    title="Torio Ghost Client V2 Devlog (Minecraft Bedrock)"
+                    frameBorder="0"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+            </section>
 
             <section className={styles.videoSection} aria-labelledby="video-heading">
               <h2 id="video-heading" className={styles.sectionTitle}>Python Prototype Versions</h2>
