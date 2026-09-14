@@ -6,8 +6,15 @@ import styles from './SiteHeader.module.css'
 
 const NAV_ITEMS = [
   { href: '/', label: 'Home' },
-  { href: '/docs', label: 'Documentation' },
+  { href: '/docs', label: 'Docs' },
 ]
+
+const EXTERNAL_LINKS = [
+  { href: 'https://github.com/Uncle-Awrt/Torio-Client', label: 'GitHub' },
+  { href: 'https://discord.gg/xq8sWQhuXG', label: 'Discord' },
+]
+
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 
 export default function SiteHeader() {
   const pathname = usePathname()
@@ -16,7 +23,8 @@ export default function SiteHeader() {
     <header className={styles.header}>
       <div className={styles.inner}>
         <Link href="/" className={styles.brand}>
-          TorioGhost Client
+          <img src={`${BASE}/images/icon.png`} alt="" className={styles.brandIcon} />
+          <span>Torio Client</span>
         </Link>
         <nav className={styles.nav} aria-label="Main navigation">
           {NAV_ITEMS.map((item) => {
@@ -32,6 +40,18 @@ export default function SiteHeader() {
               </Link>
             )
           })}
+          <span className={styles.navDivider} aria-hidden="true" />
+          {EXTERNAL_LINKS.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.navLink}
+            >
+              {item.label}
+            </a>
+          ))}
         </nav>
       </div>
     </header>

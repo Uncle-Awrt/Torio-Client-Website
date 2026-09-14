@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# torio client website
 
-## Getting Started
+source for the Torio Client site. next.js 16, plain css modules, no ui kit.
 
-First, run the development server:
+the download counter and release links in `data/downloads.json` refresh on their own via the
+github action in `.github/workflows/update-downloads.yml`, it scrapes the client repo's releases
+every few hours and commits the new numbers.
+
+module docs live in `data/public-docs.json`, one entry per module with a markdown `content` body.
+the docs page renders that with marked.
+
+## running it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+then open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+build for production with `npm run build` and serve with `npm start`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## structure
 
-## Learn More
+- `app/page.tsx` - the landing page
+- `app/docs/` - module documentation, fed by `data/public-docs.json`
+- `app/components/SiteHeader.tsx` - shared header
+- `data/` - downloads counter + docs content
+- `scripts/fetch-downloads.mjs` - what the workflow runs
+- `public/images/` - client screenshots and the icon
 
-To learn more about Next.js, take a look at the following resources:
+## notes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+support questions do not belong in this repo's issues. the client's discord
+(https://discord.gg/xq8sWQhuXG) is the support channel for both the client and this site.

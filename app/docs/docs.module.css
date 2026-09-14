@@ -279,11 +279,67 @@
 }
 
 .comingSoonSimple {
-  font-family: var(--font-geist-mono), 'SFMono-Regular', Consolas, monospace;
+  font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace;
   font-size: 1.15rem;
   color: #ff4da6;
   letter-spacing: 0.02em;
   margin: 0;
+}
+
+.docBody {
+  margin-top: 2rem;
+  max-width: 720px;
+  color: #bfaec2;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.docBody p {
+  margin: 0 0 1.25rem;
+}
+
+.docBody p:last-child {
+  margin-bottom: 0;
+}
+
+.docBody strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.docBody a {
+  color: #ff4da6;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 20, 147, 0.35);
+}
+
+.docBody a:hover,
+.docBody a:focus-visible {
+  border-bottom-color: #ff4da6;
+}
+
+.docBody ul,
+.docBody ol {
+  margin: 0 0 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.docBody li {
+  margin-bottom: 0.5rem;
+}
+
+.docBody li::marker {
+  color: #ff4da6;
+}
+
+.docBody code {
+  font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
+  background: rgba(255, 20, 147, 0.08);
+  border: 1px solid rgba(255, 20, 147, 0.15);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  color: #e8d8e4;
 }
 
 
