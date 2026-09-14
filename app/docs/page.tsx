@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, useMemo, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { marked } from 'marked'
 import SiteHeader from '../components/SiteHeader'
 import styles from './docs.module.css'
 import docsDataJson from '../../data/public-docs.json'
@@ -123,6 +124,11 @@ function DocsContent() {
 
   const activeModule = docsData[selectedCategory]?.find(m => m.id === selectedModuleId) || docsData.general[0]
 
+  const renderedContent = useMemo(() => {
+    if (!activeModule?.content) return ''
+    return marked.parse(activeModule.content, { async: false }) as string
+  }, [activeModule?.content])
+
   const getFilteredData = () => {
     if (!searchQuery) return docsData
 
@@ -225,7 +231,7 @@ function DocsContent() {
         </div>
       </aside>
 
-      {/* Main Content Area: Retains the design, but renders Coming Soon */}
+      {/* Main Content Area */}
       <main className={styles.contentArea}>
         {activeModule ? (
           <article className={styles.docArticle}>
@@ -239,9 +245,16 @@ function DocsContent() {
               )}
             </header>
 
-            <div className={styles.comingSoonBox}>
-              <p className={styles.comingSoonSimple}>Documentation is Coming Soon...</p>
-            </div>
+            {renderedContent ? (
+              <div
+                className={styles.docBody}
+                dangerouslySetInnerHTML={{ __html: renderedContent }}
+              />
+            ) : (
+              <div className={styles.comingSoonBox}>
+                <p className={styles.comingSoonSimple}>Documentation is Coming Soon...</p>
+              </div>
+            )}
           </article>
         ) : (
           <div className={styles.emptyState}>

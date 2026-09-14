@@ -4,19 +4,19 @@
       "id": "DeveloperDocs",
       "name": "Developer Documentation",
       "description": "Welcome to the Torio Client developer documentation. This section covers the internal memory architecture, scanning routines, and injection frameworks used in the WPF client.",
-      "content": ""
+      "content": "where the code lives, and what to expect from it.\n\n- the current client is written in c# / wpf. the v2 source is not published yet, it unlocks once a stable version ships\n- the python prototype, up to v1.1.0-beta.3, is public at [kukentyan/torio-master](https://github.com/kukentyan/torio-master)\n- releases go out through the [github releases page](https://github.com/Uncle-Awrt/Torio-Client/releases), beta tags first\n\n**support policy**: if something breaks, do not open a github issue. the [discord](https://discord.gg/xq8sWQhuXG) is the only support channel, issues opened on the repo get closed unanswered."
     },
     {
       "id": "License",
       "name": "License & Credits",
       "description": "Torio Client is released as open-source software under the terms detailed below. Please refer to the official `LICENSE` file in the repository for the full legal text.",
-      "content": ""
+      "content": "torio client ships under **CC BY-NC 4.0** (attribution-noncommercial).\n\n- share it, adapt it, build on it, keep it non-commercial\n- credit the original author when you do\n- full text lives in the [LICENSE file](https://github.com/Uncle-Awrt/Torio-Client/blob/main/LICENSE) of the client repo\n\ncredits go to ducky for the client itself and to everyone who stress-tested through the betas."
     },
     {
       "id": "MemoryScanner",
       "name": "Memory Scanner Architecture",
       "description": "The core subsystem responsible for reading and analyzing the game process memory. It detects game state changes such as World Entry/Exit and Menu states by scanning for specific Array of Bytes (AOB) signatures.",
-      "content": ""
+      "content": "the part everything else stands on.\n\non connect, the client:\n\n1. finds the running bedrock process\n2. reads the game version and picks the matching offset set\n3. scans memory for the local player, entities and world state\n4. feeds a live view of that data to every active module\n\nmodules never talk to the game directly, they read from this layer. that is also why an unsupported game version stops you at the connect screen instead of crashing mid-match. offsets are per-version and get updated with each new bedrock release."
     }
   ],
   "visual": [
@@ -24,37 +24,37 @@
       "id": "ESP",
       "name": "ESP",
       "description": "Draws 2D bounding boxes and health bars around other players through walls.",
-      "content": ""
+      "content": "2d bounding boxes drawn around entities, visible straight through walls. boxes come with health bars, so you can read a fight before committing to it. range and colors are configurable in settings."
     },
     {
       "id": "Coordinates",
       "name": "Force Show Coordinates",
       "description": "Enables coordinate HUD display by rewriting local player settings state in memory.",
-      "content": ""
+      "content": "flips the game's own coordinate hud on, even on servers that hide it. it works by rewriting the local player setting, so the server is never asked and never knows."
     },
     {
       "id": "Fullbright",
       "name": "Fullbright",
       "description": "Instantly increases game brightness to maximum level, removing dark areas and shadows.",
-      "content": ""
+      "content": "zero to full light, everywhere, permanently. caves, night, the void, all lit. brightness is forced client-side, so torches become a style choice."
     },
     {
       "id": "TimeChanger",
       "name": "Time Changer",
       "description": "Changes client-side game time to any hour of the day.",
-      "content": ""
+      "content": "sets the client-side clock to any hour you want. the server keeps its own time, you simply see the lighting you prefer. useful for recording and for seeing what you are doing at night."
     },
     {
       "id": "TrueSight",
       "name": "True Sight",
       "description": "Reveals invisible entities (like players under invisibility potion status or spectating admins).",
-      "content": ""
+      "content": "drops the invisibility flag client-side. invisible players, mobs and effects all render normally on your screen, while everyone else sees nothing at all."
     },
     {
       "id": "Zoom",
       "name": "Zoom",
       "description": "Adjusts camera Field of View (FOV) state dynamically, acting as a tactical telescope.",
-      "content": ""
+      "content": "a camera fov toggle acting as a scope. hold or toggle the bind, and set the zoom level in settings. good for spotting players across a render distance."
     }
   ],
   "combat": [
@@ -62,55 +62,55 @@
       "id": "AimAssist",
       "name": "Aim Assist",
       "description": "Smoothly guides your crosshair towards nearby players to improve target tracking and landing hits.",
-      "content": ""
+      "content": "guides your crosshair toward nearby players. only players are tracked, mobs and animals are ignored on purpose. yaw and pitch corrections use dynamic values, so the pull stays smooth instead of jittery."
     },
     {
       "id": "Autoclicker",
       "name": "Auto Clicker",
       "description": "Automates clicking at high rates for both left and right mouse buttons.",
-      "content": ""
+      "content": "left and right click automation with randomizer support, so every interval lands inside believable human ranges.\n\n- **menu check** pauses it while any gui is open\n- **block break check** pauses it while you are mining\n\nboth checks are individual toggles, pick the combination that fits how you play."
     },
     {
       "id": "BackTrack",
       "name": "Back Track",
       "description": "Delays player position updates, allowing you to hit their past positions (ticks backtrack).",
-      "content": ""
+      "content": "delays incoming player positions through a smooth continuous queue, so enemies appear where they were moments ago and you can hit the ghost of them.\n\n- **flow** mode toggles on and off\n- **hold** mode stays active while you hold the bind"
     },
     {
       "id": "DoubleClicker",
       "name": "Double Clicker",
       "description": "Injects secondary mouse clicks on left-button triggers to increase PVP click-rates.",
-      "content": ""
+      "content": "fires a second click on every real left click you make, effectively doubling your cps without touching any click speed settings. nothing to configure beyond the toggle."
     },
     {
       "id": "FakeLag",
       "name": "Fake Lag",
       "description": "Delays outgoing network packets to simulate high ping, throwing off opponents tracking.",
-      "content": ""
+      "content": "delays your own outgoing movement packets, so you stutter and lag on other players' screens while your game stays completely smooth.\n\n- **flow** and **hold** modes like backtrack\n- **hardstop on hit** snaps you back the moment you take or land a hit\n\npreviously called reverse backtrack."
     },
     {
       "id": "Hitbox",
       "name": "Hitbox",
       "description": "Expands the physical size of enemy hitboxes in memory, allowing you to land attacks from wider angles.",
-      "content": ""
+      "content": "expands entity hitboxes in memory. bigger boxes mean easier tracking and more forgiving swings. the world looks exactly the same, the targets are just easier to land hits on."
     },
     {
       "id": "Reach",
       "name": "Reach",
       "description": "Extends your maximum attack range in memory, allowing you to strike players from further away.",
-      "content": ""
+      "content": "extends your melee attack distance past the vanilla limit. randomizer support keeps the extension inside believable bounds instead of a flat number every swing."
     },
     {
       "id": "StickyAim",
       "name": "Sticky Aim",
       "description": "Locks your crosshair rotation tracking to the closest player hitbox in range.",
-      "content": ""
+      "content": "fine-tunes your sensitivity while you are manually aiming at someone, so your crosshair sticks to the target instead of sliding past it. it only kicks in while you are already aiming, never pulls on its own. previously called micro aim."
     },
     {
       "id": "TriggerBot",
       "name": "Trigger Bot",
       "description": "Automatically triggers an attack the exact millisecond your crosshair passes over an enemy entity.",
-      "content": ""
+      "content": "swings the instant your crosshair sits on a target. three modes:\n\n- **first hit** fires once per approach\n- **auto click** keeps swinging while the target stays under your crosshair\n- **hitselect** only activates while you are being hit and already aiming back at the attacker"
     }
   ],
   "movement": [
@@ -118,37 +118,37 @@
       "id": "AirAcceleration",
       "name": "Air Acceleration",
       "description": "Enhances horizontal strafe control and air speed when jumping.",
-      "content": ""
+      "content": "changes how fast you accelerate mid-air, so strafing during jumps actually shifts your momentum. randomizer support included, keep it subtle or go loud."
     },
     {
       "id": "JumpReset",
       "name": "Jump Reset",
       "description": "Simulates high-velocity downward momentum the moment you take damage, resetting your knockback instantly.",
-      "content": ""
+      "content": "fires a jump the exact moment you take damage in combat, automating the jump reset timing used to cut knockback combos. no timing practice required."
     },
     {
       "id": "LagSwitch",
       "name": "Lag Switch",
       "description": "Manually toggles packet transmission updates to simulate sudden server latency spikes.",
-      "content": ""
+      "content": "hold the bind to freeze outgoing packets and fake a connection spike. everything you do queues up, and releases the moment you let go. short taps for quick desyncs, long holds for real chaos."
     },
     {
       "id": "Sprint",
       "name": "Sprint",
       "description": "Forces your player entity to maintain sprinting speed in all directions.",
-      "content": ""
+      "content": "sprint without holding the key. forced in every direction, including backwards and sideways. your pinky will thank you."
     },
     {
       "id": "Timer",
       "name": "Timer",
       "description": "Speeds up or slows down the game tick rate client-side.",
-      "content": ""
+      "content": "speeds up or slows down the client tick rate, so the game runs faster or slower than the server expects. randomizer support keeps the rate moving instead of pinned."
     },
     {
       "id": "Velocity",
       "name": "Velocity",
       "description": "Scales the knockback velocity received from attacks and environmental hazards.",
-      "content": ""
+      "content": "scales incoming knockback with separate **horizontal (x/z)** and **vertical (y)** multipliers. dial it from reduced to zero, or mix and match to keep some vertical pop while cutting horizontal push."
     }
   ],
   "utility": [
@@ -156,67 +156,67 @@
       "id": "ArrayList",
       "name": "Array List",
       "description": "Displays a real-time list of all active modules on your HUD.",
-      "content": ""
+      "content": "a live list of your enabled modules, rendered on the hud. what is on, at a glance. position and style are configurable, pair it with a clean theme and it doubles as a flex."
     },
     {
       "id": "Auto360",
       "name": "Auto 360",
       "description": "Triggers a rapid 360-degree spin of your camera with a single keybind.",
-      "content": ""
+      "content": "one bind, instant spin. supports **right**, **left** and **alternate** directions, with configurable sensitivity. the classic clip finisher."
     },
     {
       "id": "AutoBow",
       "name": "Auto Bow",
       "description": "Automatically draws and releases bows at the perfect timing for maximum damage.",
-      "content": ""
+      "content": "charges the bow and releases at the right moment automatically. timing tracks the charge window, so every shot leaves at full power without you watching the meter."
     },
     {
       "id": "AutoThrow",
       "name": "Auto Throw",
       "description": "Throws projectiles (pearls, eggs, snowballs, potions) at rapid-fire speed.",
-      "content": ""
+      "content": "throws pearls, snowballs, eggs and splash potions on a bind. fire and forget, literally. works as a macro, so it throws whatever fits the moment."
     },
     {
       "id": "CustomWatermark",
       "name": "Custom Watermark",
       "description": "Replaces the default overlay text with a customized client name and styling.",
-      "content": ""
+      "content": "your own text in the corner of the screen. font, size and content are all configurable. call the client whatever you want, we are not the police."
     },
     {
       "id": "DiscordPresence",
       "name": "Discord Rich Presence",
       "description": "Displays customized Torio Client details on your Discord profile status.",
-      "content": ""
+      "content": "shows your current menu, server, game version and client status on your discord profile while you play. lets friends see exactly what you are running without asking."
     },
     {
       "id": "DuckOverlay",
       "name": "Duck Overlay",
       "description": "Draws a cute animated duck mascot on your screen.",
-      "content": ""
+      "content": "an animated duck on your screen while you play. it does nothing. that is the entire point. if losing a fight to a sweater admin has you tilted, the duck is there for you."
     },
     {
       "id": "FastItem",
       "name": "Fast Item",
       "description": "Spams usage of items (like eating food or drinking potions) in a fraction of the normal time.",
-      "content": ""
+      "content": "cuts item use timers, so eating and drinking finish in a fraction of the normal time. pearls out faster, gaps down faster, fights survive longer."
     },
     {
       "id": "GuiTheme",
       "name": "GUI Theme",
       "description": "Customizes colors, glows, transparency, and style of the client overlay and menus.",
-      "content": ""
+      "content": "full accent color control with light and dark mode, plus glow and transparency settings. the entire look of the client is adjustable from gui settings, and there is a reset button for when you go too far."
     },
     {
       "id": "Streamprotect",
       "name": "Stream Protect",
       "description": "Hides all client HUD elements, overlays, and GUI windows from capture programs.",
-      "content": ""
+      "content": "hides client hud elements, overlays and gui windows from capture software. obs and discord screen shares see a clean game, your modules stay between you and the duck."
     },
     {
       "id": "Systemtray",
       "name": "System Tray",
       "description": "Minimizes the WPF application into the Windows system tray instead of the taskbar.",
-      "content": ""
+      "content": "minimizes the client to the windows system tray instead of the taskbar. reopen from the tray icon whenever you need it, quit from there too."
     }
   ],
   "core": [
@@ -224,55 +224,55 @@
       "id": "AimDetector",
       "name": "Aim Detector",
       "description": "Captures and monitors target aiming states, updating crosshair alignment variables.",
-      "content": ""
+      "content": "watches where the crosshair actually points and updates aim modules frame by frame, so triggerbot and sticky aim react to live positions instead of last tick's leftovers."
     },
     {
       "id": "BlockBreakDetector",
       "name": "Block Break Detector",
       "description": "Monitors block mining state variables to dynamically pause click simulations when breaking structures.",
-      "content": ""
+      "content": "tracks your mining state and pauses click automation while you break blocks. this is what keeps autoclicker from fighting your pickaxe mid-mine."
     },
     {
       "id": "LocalPlayerCoordinates",
       "name": "Local Player Coordinates",
       "description": "Monitors spatial parameters of the local player head to construct crosshair ray-casting lines.",
-      "content": ""
+      "content": "reads the local player position every tick and hands it to whoever needs it. coordinate hud, aim math, movement modules, all of them read from here."
     },
     {
       "id": "MenuMonitor",
       "name": "Menu Monitor",
       "description": "Monitors user menu states to pause active click features when settings or inventory containers are open.",
-      "content": ""
+      "content": "watches for open guis and menus, in-game or in the client, and pauses click features while you are clicking through settings instead of playing."
     },
     {
       "id": "MinecraftProcessMonitor",
       "name": "Minecraft Process Monitor",
       "description": "Runs polling cycles checking process active handles to control startup hooks and memory scans.",
-      "content": ""
+      "content": "polls for a running bedrock process and drives the connect flow: startup when the game appears, clean shutdown when it disappears. the connect screen leans on this one."
     },
     {
       "id": "MinecraftWindowMonitor",
       "name": "Minecraft Window Monitor",
       "description": "Tracks window focus and size alignments, synchronizing WPF overlay windows to game positions.",
-      "content": ""
+      "content": "tracks the game window's focus, size and position, so the overlay gui stays glued to the right spot and external mode keeps its place when you alt-tab."
     },
     {
       "id": "PlayerDamageMonitor",
       "name": "Player Damage Monitor",
       "description": "Monitors damage ticks to trigger Jump Reset knockback recovery loops.",
-      "content": ""
+      "content": "watches damage ticks landing on you and triggers recovery logic at the right moment. jump reset runs on this feed."
     },
     {
       "id": "RotationCalculations",
       "name": "Rotation & Angle Calculations",
       "description": "The mathematical trigonometry system responsible for computing targeted yaw and pitch angles relative to enemy entities.",
-      "content": ""
+      "content": "the trig layer that turns world positions into yaw and pitch angles. aim assist, sticky aim and triggerbot all compute their corrections through it, which is why they agree with each other."
     },
     {
       "id": "WorldStatus",
       "name": "World Status Monitor",
       "description": "Monitors player session updates to set target context during world entries and exits.",
-      "content": ""
+      "content": "tracks world and session state, so modules know when you are in a game, sitting in a menu or between servers, and behave accordingly instead of firing at the title screen."
     }
   ]
 }
