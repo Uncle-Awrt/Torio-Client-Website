@@ -21,10 +21,46 @@
   ],
   "visual": [
     {
+      "id": "Ambience",
+      "name": "Ambience / Weather Changer",
+      "description": "Customizes client-side skybox lighting, weather states, and rain opacity.",
+      "content": "provides full client-side control over world weather and ambient lighting. force clear skies, toggle rain and thunderstorms, or adjust weather opacity and custom time ticks independent of server weather."
+    },
+    {
+      "id": "AntiBlindness",
+      "name": "Anti Blindness",
+      "description": "Disables blindness, darkness, and nausea visual distortion shaders completely.",
+      "content": "patches the post-processing screen shader flags in memory, completely eliminating darkness, blindness, and nausea effect overlays for crystal clear visibility in deep dark caves and PvP battles."
+    },
+    {
+      "id": "BehindYou",
+      "name": "Behind You (Rear View)",
+      "description": "Projects a tactical rear-view camera mirror to monitor enemies approaching from behind.",
+      "content": "renders an inverted perspective mirror or rear-threat radar on the screen, letting you watch your back and anticipate flanking players in combat without manually turning your camera around."
+    },
+    {
+      "id": "BlockESP",
+      "name": "Block / Storage ESP",
+      "description": "Highlights valuable ores, chests, shulker boxes, and containers through walls.",
+      "content": "renders distinct 3D wireframe boxes through solid terrain around target blocks, including diamond ores, ancient debris, normal chests, trapped chests, ender chests, and shulkers with configurable colors."
+    },
+    {
+      "id": "ChinaHat",
+      "name": "China Hat",
+      "description": "Renders a smooth 3D cosmetic conical hat over your character in third-person view.",
+      "content": "draws a customizable 3D conical hat visual directly above your player model with adjustable radius, height, color gradients, and opacity in third-person camera mode."
+    },
+    {
       "id": "ESP",
       "name": "ESP",
       "description": "Draws 2D bounding boxes and health bars around other players through walls.",
       "content": "2d bounding boxes drawn around entities, visible straight through walls. boxes come with health bars, so you can read a fight before committing to it. range and colors are configurable in settings."
+    },
+    {
+      "id": "FakeLagVisual",
+      "name": "Fake Lag Visual (Ghost Box)",
+      "description": "Renders a bounding box at your server-side position while FakeLag or Blink is active.",
+      "content": "displays a visual 3D ghost box indicating the exact coordinate position where the server and other players currently perceive your player model while packet choking or lag simulation is enabled."
     },
     {
       "id": "Coordinates",
@@ -39,10 +75,46 @@
       "content": "zero to full light, everywhere, permanently. caves, night, the void, all lit. brightness is forced client-side, so torches become a style choice."
     },
     {
+      "id": "HideAndSeekHelper",
+      "name": "Hide and Seek Helper",
+      "description": "Highlights disguised players and block props in hide-and-seek minigames.",
+      "content": "identifies player entities disguised as blocks or props in minigames and renders bounding box highlights and distance tags over them, making hidden players easily identifiable."
+    },
+    {
+      "id": "HitParticles",
+      "name": "Hit Particles",
+      "description": "Spawns custom client-side visual particle bursts upon striking enemies.",
+      "content": "generates customizable particle bursts (hearts, stars, smoke, crit sparks) around target entities whenever you deal damage, enhancing hit feedback."
+    },
+    {
+      "id": "MediaOverlay",
+      "name": "Media Overlay",
+      "description": "Displays currently playing music tracks and playback status in a clean HUD widget.",
+      "content": "integrates with the Windows System Media Transport Controls API to show your currently playing song title, artist name, and playback progress bar directly on the client overlay."
+    },
+    {
+      "id": "NameTag",
+      "name": "Name Tags",
+      "description": "Draws clear, unscaled nameplates showing health, distance, and gear through walls.",
+      "content": "replaces standard entity nameplates with high-visibility billboard tags rendered at uniform size regardless of distance, showing player names, current health numbers, and active equipment through solid blocks."
+    },
+    {
+      "id": "PlayerTrail",
+      "name": "Player Trail",
+      "description": "Draws a smooth glowing particle or ribbon trail behind your movement path.",
+      "content": "records player position history and draws a sleek, customizable ribbon or trail behind your character as you run, jump, or fall."
+    },
+    {
       "id": "TimeChanger",
       "name": "Time Changer",
       "description": "Changes client-side game time to any hour of the day.",
       "content": "sets the client-side clock to any hour you want. the server keeps its own time, you simply see the lighting you prefer. useful for recording and for seeing what you are doing at night."
+    },
+    {
+      "id": "Tracers",
+      "name": "Tracers",
+      "description": "Draws directional indicator lines from your crosshair or feet to nearby players.",
+      "content": "projects 2D or 3D vector lines connecting your screen center or player feet directly to target entities, allowing effortless tracking of opponents in complex terrain or fast-paced PvP."
     },
     {
       "id": "TrueSight",
@@ -71,6 +143,18 @@
       "content": "left and right click automation with randomizer support, so every interval lands inside believable human ranges.\n\n- **menu check** pauses it while any gui is open\n- **block break check** pauses it while you are mining\n\nboth checks are individual toggles, pick the combination that fits how you play."
     },
     {
+      "id": "AutoCrystal",
+      "name": "Auto Crystal",
+      "description": "Automatically places and detonates End Crystals at high speeds for competitive PvP.",
+      "content": "scans surrounding targets and automatically handles the placement and immediate detonation of end crystals in crystal PvP fights. includes configurable placement delays, break delays, and hit rate limits to ensure reliable detonation without desync."
+    },
+    {
+      "id": "AutoMace",
+      "name": "Auto Mace",
+      "description": "Automatically swaps to a Mace mid-air right before landing a downward smash attack.",
+      "content": "detects when the local player is falling from sufficient height and automatically swaps to a mace immediately before landing a hit to deliver a lethal smash attack, then instantly reverts back to your previous hotbar slot."
+    },
+    {
       "id": "BackTrack",
       "name": "Back Track",
       "description": "Delays player position updates, allowing you to hit their past positions (ticks backtrack).",
@@ -89,10 +173,22 @@
       "content": "delays your own outgoing movement packets, so you stutter and lag on other players' screens while your game stays completely smooth.\n\n- **flow** and **hold** modes like backtrack\n- **hardstop on hit** snaps you back the moment you take or land a hit\n\npreviously called reverse backtrack."
     },
     {
+      "id": "GhostHand",
+      "name": "Ghost Hand",
+      "description": "Interact with chests, containers, and blocks through solid walls and entities.",
+      "content": "bypasses line-of-sight raycast restrictions for block interactions, allowing you to open chests, furnaces, hoppers, or use utility blocks through walls and obstructing players without moving out of cover."
+    },
+    {
       "id": "Hitbox",
       "name": "Hitbox",
       "description": "Expands the physical size of enemy hitboxes in memory, allowing you to land attacks from wider angles.",
       "content": "expands entity hitboxes in memory. bigger boxes mean easier tracking and more forgiving swings. the world looks exactly the same, the targets are just easier to land hits on."
+    },
+    {
+      "id": "PearlAimbot",
+      "name": "Pearl Aimbot",
+      "description": "Calculates ballistic projectile trajectories and aims Ender Pearls with pinpoint accuracy.",
+      "content": "uses physical projectile simulation algorithms to automatically adjust your pitch and yaw angles when throwing ender pearls, ensuring accurate landing at target coordinates, escape positions, or enemy locations."
     },
     {
       "id": "Reach",
@@ -121,6 +217,24 @@
       "content": "changes how fast you accelerate mid-air, so strafing during jumps actually shifts your momentum. randomizer support included, keep it subtle or go loud."
     },
     {
+      "id": "AirJump",
+      "name": "Air Jump",
+      "description": "Allows continuous jumping while airborne as if standing on solid ground.",
+      "content": "resets the on-ground state in local player memory while falling or airborne, enabling you to jump repeatedly mid-air to scale steep terrain or traverse gaps without placing blocks."
+    },
+    {
+      "id": "AutoBlockReset",
+      "name": "Auto Block Reset",
+      "description": "Instantly places a block beneath your feet when damaged to cancel knockback momentum.",
+      "content": "monitors incoming player damage events and automatically aims down to place a block beneath your feet, instantly canceling horizontal knockback momentum before restoring your crosshair back to your target."
+    },
+    {
+      "id": "AutoStap",
+      "name": "Auto S-Tap",
+      "description": "Sends automated backward movement pulses upon landing a hit to maintain combo spacing.",
+      "content": "automatically releases forward movement and taps the backward key (S) for a few milliseconds immediately after striking an opponent, helping you maintain optimal hit spacing and deal continuous combo knockback."
+    },
+    {
       "id": "JumpReset",
       "name": "Jump Reset",
       "description": "Simulates high-velocity downward momentum the moment you take damage, resetting your knockback instantly.",
@@ -131,6 +245,18 @@
       "name": "Lag Switch",
       "description": "Manually toggles packet transmission updates to simulate sudden server latency spikes.",
       "content": "hold the bind to freeze outgoing packets and fake a connection spike. everything you do queues up, and releases the moment you let go. short taps for quick desyncs, long holds for real chaos."
+    },
+    {
+      "id": "NoJumpDelay",
+      "name": "No Jump Delay",
+      "description": "Removes the 10-tick jump cooldown, allowing instant and consecutive bunny hops.",
+      "content": "continuously clears the internal jump cooldown counter in game memory, letting you jump on the exact tick you touch the ground for smoother, faster bunny hops and momentum maintenance."
+    },
+    {
+      "id": "NoSlowdown",
+      "name": "No Slowdown",
+      "description": "Maintains 100% full movement speed while eating, charging bows, or walking in webs.",
+      "content": "hooks the player speed reduction routine in memory to prevent the slowdown penalty normally applied while consuming food, drinking potions, using shields, drawing bows, or traversing cobwebs."
     },
     {
       "id": "Sprint",
@@ -149,6 +275,12 @@
       "name": "Velocity",
       "description": "Scales the knockback velocity received from attacks and environmental hazards.",
       "content": "scales incoming knockback with separate **horizontal (x/z)** and **vertical (y)** multipliers. dial it from reduced to zero, or mix and match to keep some vertical pop while cutting horizontal push."
+    },
+    {
+      "id": "WTap",
+      "name": "W-Tap",
+      "description": "Automates sprint-resetting by micro-pausing forward movement on every hit.",
+      "content": "replicates the classic PvP w-tapping technique by releasing and re-engaging forward sprint immediately after an attack registers, maximizing the knockback dealt to your target on every consecutive hit."
     }
   ],
   "utility": [
@@ -177,10 +309,22 @@
       "content": "throws pearls, snowballs, eggs and splash potions on a bind. fire and forget, literally. works as a macro, so it throws whatever fits the moment."
     },
     {
+      "id": "Blink",
+      "name": "Blink",
+      "description": "Temporarily buffers outgoing movement packets to appear frozen before instantly teleporting.",
+      "content": "chokes and queues outgoing position and movement packets while allowing you to move freely client-side. upon disabling, all queued packets are dispatched simultaneously, making you appear to teleport across the map to other players."
+    },
+    {
       "id": "CustomWatermark",
       "name": "Custom Watermark",
       "description": "Replaces the default overlay text with a customized client name and styling.",
       "content": "your own text in the corner of the screen. font, size and content are all configurable. call the client whatever you want, we are not the police."
+    },
+    {
+      "id": "DeviceIDSpoofer",
+      "name": "Device ID Spoofer",
+      "description": "Randomizes unique hardware and device identifiers during server handshakes.",
+      "content": "intercepts client telemetry and login handshake packets to replace your persistent device ID, hardware UUID, and platform signatures with randomized values, preventing cross-session hardware-based tracking."
     },
     {
       "id": "DiscordPresence",
@@ -205,6 +349,18 @@
       "name": "GUI Theme",
       "description": "Customizes colors, glows, transparency, and style of the client overlay and menus.",
       "content": "full accent color control with light and dark mode, plus glow and transparency settings. the entire look of the client is adjustable from gui settings, and there is a reset button for when you go too far."
+    },
+    {
+      "id": "ReachDisplaySpoof",
+      "name": "Reach Display Spoof",
+      "description": "Spoofs on-screen hit distance readouts in watermarks and HUDs for clean screen shares.",
+      "content": "clamps the reported hit reach distance in HUD indicators and on-screen overlays to a legit-looking maximum (e.g. 3.0 blocks), concealing expanded hitbox or reach values during screen shares or video recordings."
+    },
+    {
+      "id": "SelfDestruct",
+      "name": "Self Destruct",
+      "description": "Emergency unhooking system that restores vanilla memory and terminates the client cleanly.",
+      "content": "immediately unhooks all shellcode caves, restores original game instruction bytes, wipes runtime config memory, and cleanly closes the client process without leaving trace signatures or crashing the game."
     },
     {
       "id": "Streamprotect",

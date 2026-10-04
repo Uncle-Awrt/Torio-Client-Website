@@ -17,18 +17,7 @@
   z-index: -2;
 }
 
-.gridOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image:
-    linear-gradient(rgba(255, 20, 147, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 20, 147, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-  pointer-events: none;
-}
+
 
 /* Container & Layout */
 .docsContainer {
@@ -67,8 +56,8 @@
   width: 260px;
   flex-shrink: 0;
   background: transparent;
-  border-right: 1px solid rgba(255, 255, 255, 0.07);
-  padding: 0 1.5rem 0 0;
+  border-right: none;
+  padding: 0;
   display: flex;
   flex-direction: column;
   position: sticky;
@@ -83,15 +72,26 @@
   width: 100%;
   height: 100%;
   flex: 1;
+  padding-right: 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
 }
 
 .sidebarSticky::-webkit-scrollbar {
   width: 4px;
 }
 
+.sidebarSticky::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .sidebarSticky::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+
+.sidebarSticky::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 20, 147, 0.4);
 }
 
 /* Search Box */
@@ -103,14 +103,26 @@
 
 .searchInput {
   width: 100%;
+  height: 38px;
+  display: block;
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
-  padding: 0.6rem 2rem 0.6rem 0.85rem;
+  padding: 0 2.2rem 0 0.85rem;
   color: #ffffff;
   font-size: 0.9rem;
   font-family: inherit;
   transition: border-color 0.15s ease;
+}
+
+.searchInput::-webkit-search-cancel-button,
+.searchInput::-webkit-search-decoration,
+.searchInput::-webkit-search-results-button,
+.searchInput::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
 }
 
 .searchInput:focus {
@@ -124,15 +136,23 @@
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
-  color: rgba(255, 20, 147, 0.4);
+  border-radius: 4px;
+  color: #8c7b8a;
   cursor: pointer;
-  font-size: 0.75rem;
+  padding: 0;
+  transition: all 0.15s ease;
 }
 
 .searchClear:hover {
-  color: #ff4da6;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
 }
 
 /* Navigation Section */

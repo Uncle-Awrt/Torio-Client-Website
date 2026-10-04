@@ -173,7 +173,7 @@ function DocsContent() {
         <div className={styles.sidebarSticky}>
           <div className={styles.searchWrapper}>
             <input
-              type="search"
+              type="text"
               placeholder="Search modules..."
               className={styles.searchInput}
               value={searchQuery}
@@ -184,8 +184,20 @@ function DocsContent() {
                 className={styles.searchClear}
                 onClick={() => setSearchQuery('')}
                 aria-label="Clear search"
+                type="button"
               >
-                ✕
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                >
+                  <line x1="1.5" y1="1.5" x2="8.5" y2="8.5" />
+                  <line x1="8.5" y1="1.5" x2="1.5" y2="8.5" />
+                </svg>
               </button>
             )}
           </div>
@@ -273,7 +285,6 @@ export default function DocsPage() {
       <SiteHeader />
 
       <div className={styles.background} />
-      <div className={styles.gridOverlay} />
 
       <div className={styles.docsContainer}>
         <Suspense fallback={
@@ -281,7 +292,7 @@ export default function DocsPage() {
             <aside className={styles.sidebar}>
               <div className={styles.searchWrapper}>
                 <input
-                  type="search"
+                  type="text"
                   placeholder="Search modules..."
                   className={styles.searchInput}
                   disabled
