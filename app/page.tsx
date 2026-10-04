@@ -5,7 +5,6 @@ import Link from 'next/link'
 import SiteHeader from './components/SiteHeader'
 import styles from './page.module.css'
 import downloadsData from '../data/downloads.json'
-import docsDataJson from '../data/public-docs.json'
 
 const FALLBACK_DOWNLOADS = 1414
 const REPO_RELEASES_URL = 'https://github.com/Uncle-Awrt/Torio-Client/releases/latest'
@@ -17,108 +16,44 @@ let hasLoadedGlobal = false
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 const asset = (path: string) => `${BASE}${path.startsWith('/') ? path : `/${path}`}`
 
-const MODULE_CATEGORIES = [
-  {
-    key: 'visual',
-    label: 'Visual',
-    image: asset('/images/visual_modules.png'),
-    blurb: 'see more of the game than it wants you to',
-  },
-  {
-    key: 'combat',
-    label: 'Combat',
-    image: asset('/images/combat_modules.png'),
-    blurb: 'pvp helpers with randomizer support baked in',
-  },
-  {
-    key: 'movement',
-    label: 'Movement',
-    image: asset('/images/movement_modules.png'),
-    blurb: 'strafe, tick and knockback control',
-  },
-  {
-    key: 'utility',
-    label: 'Utility',
-    image: asset('/images/utility_modules.png'),
-    blurb: 'the stuff that makes the client livable',
-  },
-] as const
-
-type ModuleCategoryKey = (typeof MODULE_CATEGORIES)[number]['key']
-
-const docsData = docsDataJson as unknown as Record<ModuleCategoryKey, Array<{ id: string; name: string }>>
 
 const CORE_FEATURES = [
   {
     badge: 'connect',
     title: 'the connect screen does the work',
-    body: 'open bedrock, then run torio. the connect screen finds the minecraft process on its own, checks the version in real time and tells you straight when a build is not supported. no offset folders, no manual anything.',
     image: asset('/images/connectscreen.png'),
     alt: 'Torio Client connect screen detecting a running Minecraft Bedrock process',
   },
   {
     badge: 'version switcher',
     title: 'switch versions without launchers',
-    body: 'hop between v26.20 and v26.45, or install a supported bedrock build straight from the client. the built-in version switcher handles it all. no third-party launcher, no digging through folders.',
     image: asset('/images/versionswitcher.png'),
     alt: 'Torio Client built-in version switcher listing supported Minecraft Bedrock versions',
   },
   {
     badge: 'loading',
     title: 'hooked in seconds',
-    body: 'once you connect, the loading pass scans game memory and settles in without freezing the game. from there every module reads live data, frame by frame, at full speed.',
     image: asset('/images/loadingscreen.png'),
     alt: 'Torio Client loading screen scanning game memory after connect',
   },
 ]
 
-const SMALL_FEATURES = [
-  {
-    title: 'configs',
-    body: 'save a setup, load it back whenever. switching between playstyles is one click instead of thirty.',
-  },
-  {
-    title: 'keybinds',
-    body: 'nearly every module takes a custom bind. even the gui toggle itself is rebindable in settings.',
-  },
-  {
-    title: 'rgb theming',
-    body: 'full accent color control with light and dark mode, straight from gui settings. no files to edit.',
-  },
-  {
-    title: 'stream protect',
-    body: 'hides your info while streaming, and the in-game overlay stays out of obs and discord captures.',
-  },
-  {
-    title: 'system tray',
-    body: 'minimize to the tray when you are done configuring. it stays out of the way until you need it.',
-  },
-  {
-    title: 'discord presence',
-    body: 'your profile shows the current menu, server, game version and client status while you play.',
-  },
-]
 
 const GUIDE_STEPS = [
   {
     badge: '01',
     title: 'download',
-    body: 'grab the latest release from github. the .exe runs standalone, the .zip is the portable one. no installer, nothing bundled.',
+    body: 'grab the latest .exe or portable .zip release.',
   },
   {
     badge: '02',
     title: 'connect',
-    body: 'open bedrock first, then run torio. the connect screen finds the game, checks the version and hooks in.',
+    body: 'launch bedrock, then open torio to hook in.',
   },
   {
     badge: '03',
-    title: 'set it up',
-    body: 'toggle what you need, bind it, theme it. save the whole thing as a config so it is one click next time.',
-  },
-  {
-    badge: '04',
-    title: 'keep up',
-    body: 'new bedrock versions get support as offsets update. watch the releases page or the announcements channel in discord.',
+    title: 'configure',
+    body: 'toggle modules, set keybinds, and save your config.',
   },
 ]
 
@@ -133,7 +68,6 @@ export default function Home() {
   const zipUrl = downloadsData.zipUrl ?? null
 
   const [isDownloadMenuOpen, setIsDownloadMenuOpen] = useState(false)
-  const [scrollY, setScrollY] = useState(0)
 
   const fullText = 'Torio Client'
 
@@ -165,11 +99,6 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   useEffect(() => {
     if (!isDownloadMenuOpen) return
@@ -185,7 +114,6 @@ export default function Home() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isDownloadMenuOpen])
 
-  const gridOpacity = Math.max(0, 1 - scrollY / 500)
 
   return (
     <>
@@ -210,21 +138,18 @@ export default function Home() {
         <div className={styles.container}>
           <SiteHeader />
 
-          <div className={styles.background}>
-            <div className={styles.gridOverlay} style={{ opacity: gridOpacity }} aria-hidden="true"></div>
-          </div>
+          <div className={styles.background}></div>
 
           <main className={styles.main}>
             <div className={styles.heroWrapper}>
               <section className={styles.hero}>
                 <h1 className={styles.title}>
-                  <span className={styles.titleGlow}>Torio Client</span>
+                  <span className={styles.titleGlow}>TorioGhost External</span>
                 </h1>
                 <p className={styles.subtitle}>external ghost client for minecraft bedrock</p>
                 <ul className={styles.heroChips}>
-                  <li className={styles.heroChip}>v26.20 - v26.45</li>
-                  <li className={styles.heroChip}>38 modules</li>
-                  <li className={styles.heroChip}>windows</li>
+                  <li className={styles.heroChip}>50+ modules</li>
+                  <li className={styles.heroChip}>windows 10 &amp; 11</li>
                   <li className={styles.heroChip}>
                     <img src={asset('download.svg')} alt="" className={styles.downloadsIcon} aria-hidden="true" />
                     <span>{downloads.toLocaleString()} downloads</span>
@@ -302,68 +227,15 @@ export default function Home() {
                 {CORE_FEATURES.map((feature, index) => (
                   <article key={feature.badge} className={`${styles.coreRow} ${index % 2 === 1 ? styles.coreRowFlip : ''}`}>
                     <div className={styles.coreText}>
-                      <span className={styles.coreBadge}>{feature.badge}</span>
+                      <div className={styles.coreTag}>
+                        <span className={styles.coreIndex}>0{index + 1}</span>
+                        <span className={styles.coreBadgeText}>{feature.badge}</span>
+                      </div>
                       <h3 className={styles.coreTitle}>{feature.title}</h3>
-                      <p className={styles.coreBody}>{feature.body}</p>
                     </div>
                     <div className={styles.coreImage}>
                       <img src={feature.image} alt={feature.alt} loading="lazy" />
                     </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            <section className={styles.modulesSection} aria-labelledby="modules-heading">
-              <h2 id="modules-heading" className={styles.sectionTitle}>38 modules, four tabs</h2>
-              <p className={styles.sectionIntro}>
-                every module is toggleable, most ship with randomizer support and their own keybind.
-                this is how they are laid out in the gui.
-              </p>
-              <div className={styles.moduleGrid}>
-                {MODULE_CATEGORIES.map((category) => (
-                  <article key={category.key} className={styles.moduleCard}>
-                    <div className={styles.moduleImageWrap}>
-                      <img
-                        src={category.image}
-                        alt={`Torio Client ${category.label} modules tab`}
-                        loading="lazy"
-                      />
-                      <span className={styles.moduleBadge}>{category.label}</span>
-                    </div>
-                    <div className={styles.moduleBody}>
-                      <p className={styles.moduleBlurb}>{category.blurb}</p>
-                      <ul className={styles.moduleChips}>
-                        {docsData[category.key].map((mod) => (
-                          <li key={mod.id}>
-                            <Link
-                              href={`/docs?category=${category.key}&module=${mod.id}`}
-                              className={styles.moduleChip}
-                            >
-                              {mod.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                      <Link
-                        href={`/docs?category=${category.key}`}
-                        className={styles.moduleBrowse}
-                      >
-                        browse {category.label.toLowerCase()} docs →
-                      </Link>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            <section className={styles.smallFeatureSection} aria-labelledby="small-features-heading">
-              <h2 id="small-features-heading" className={styles.sectionTitle}>the details that matter</h2>
-              <div className={styles.smallFeatureGrid}>
-                {SMALL_FEATURES.map((feature) => (
-                  <article key={feature.title} className={styles.smallFeatureCard}>
-                    <h3>{feature.title}</h3>
-                    <p>{feature.body}</p>
                   </article>
                 ))}
               </div>
@@ -377,7 +249,7 @@ export default function Home() {
               <div className={styles.guiGrid}>
                 <div className={styles.guiCard}>
                   <div className={styles.guiImageWrapper}>
-                    <span className={styles.guiCardBadge}>in-game gui</span>
+                    <span className={styles.guiCardBadge}>ingame gui</span>
                     <img
                       src={asset('v2_ingame_gui.png')}
                       alt="Torio Client v2 in-game overlay GUI"
@@ -386,17 +258,13 @@ export default function Home() {
                     />
                   </div>
                   <div className={styles.guiCardContent}>
-                    <h3 className={styles.guiCardTitle}>overlay mode</h3>
-                    <p className={styles.guiCardDescription}>
-                      the whole gui drawn over minecraft itself. it is stream-proof, so nothing ever
-                      leaks into obs or discord screen shares. made for people who never tab out.
-                    </p>
+                    <h3 className={styles.guiCardTitle}>in-game gui</h3>
                   </div>
                 </div>
 
                 <div className={styles.guiCard}>
                   <div className={styles.guiImageWrapper}>
-                    <span className={styles.guiCardBadge}>external gui</span>
+                    <span className={styles.guiCardBadge}>external window</span>
                     <img
                       src={asset('v2_external_gui.png')}
                       alt="Torio Client v2 external window GUI"
@@ -405,22 +273,10 @@ export default function Home() {
                     />
                   </div>
                   <div className={styles.guiCardContent}>
-                    <h3 className={styles.guiCardTitle}>windowed mode</h3>
-                    <p className={styles.guiCardDescription}>
-                      the classic desktop window next to the game. built for dual monitors and quick
-                      tinkering between rounds, and it works whether the game is focused or not.
-                    </p>
+                    <h3 className={styles.guiCardTitle}>external window</h3>
                   </div>
                 </div>
               </div>
-              <figure className={styles.wideShot}>
-                <img
-                  src={asset('/images/externalwindow.png')}
-                  alt="Torio Client v2 external window running alongside Minecraft Bedrock"
-                  loading="lazy"
-                />
-                <figcaption>the external window on v2</figcaption>
-              </figure>
             </section>
 
             <section className={styles.guideSection} aria-labelledby="guide-heading">
@@ -429,26 +285,18 @@ export default function Home() {
               <div className={styles.stepGrid}>
                 {GUIDE_STEPS.map((step) => (
                   <div key={step.badge} className={styles.stepCard}>
-                    <div className={styles.stepBadge}>{step.badge}</div>
-                    <h3>{step.title}</h3>
-                    <p>{step.body}</p>
+                    <div className={styles.stepHeader}>
+                      <span className={styles.stepNumber}>{step.badge}</span>
+                      <h3 className={styles.stepTitle}>{step.title}</h3>
+                    </div>
+                    <p className={styles.stepBody}>{step.body}</p>
                   </div>
                 ))}
-              </div>
-
-              <div className={styles.troubleCallout}>
-                <h3>something broke?</h3>
-                <p>
-                  first make sure you are on the latest release and a supported game version.
-                  if it still acts up, ask in the{' '}
-                  <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className={styles.discordLink}>discord</a>.
-                  github issues on the client repo are not the support channel.
-                </p>
               </div>
             </section>
 
             <section className={styles.videoSection} aria-labelledby="video-heading">
-              <h2 id="video-heading" className={styles.sectionTitle}>in motion</h2>
+              <h2 id="video-heading" className={styles.sectionTitle}>gameplay &amp; devlog</h2>
 
               <div className={styles.videoFeatured}>
                 <div className={styles.videoWrapper}>
@@ -462,10 +310,6 @@ export default function Home() {
                     allowFullScreen
                   ></iframe>
                 </div>
-                <p className={styles.videoCaption}>
-                  <span className={styles.videoTag}>devlog · work in progress</span>
-                  the latest v2 showcase, straight from development. not public yet.
-                </p>
               </div>
 
               <h3 className={styles.videoGroupTitle}>the python days</h3>
