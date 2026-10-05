@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import Link from 'next/link'
 import { marked } from 'marked'
 import SiteHeader from '../components/SiteHeader'
 import styles from './docs.module.css'
@@ -86,40 +85,41 @@ function DocsContent() {
       } else if (docsData[catParam].length > 0) {
         setSelectedModuleId(docsData[catParam][0].id)
       }
-      setExpandedCategories(prev => ({
-        ...prev,
-        [catParam]: true
-      }))
+      setExpandedCategories(prev => ({ ...prev, [catParam]: true }))
     } else {
       setSelectedCategory('general')
       if (docsData.general.length > 0) {
         setSelectedModuleId(docsData.general[0].id)
       }
-      setExpandedCategories(prev => ({
-        ...prev,
-        general: true
-      }))
+      setExpandedCategories(prev => ({ ...prev, general: true }))
     }
   }, [searchParams])
+
+  // mobile drawer: Esc closes it, and the page behind doesn't scroll while it's open
+  useEffect(() => {
+    if (!isSidebarOpen) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setIsSidebarOpen(false) }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [isSidebarOpen])
 
   const selectModule = (category: keyof DocsData, moduleId: string) => {
     setSelectedCategory(category)
     setSelectedModuleId(moduleId)
     setIsSidebarOpen(false)
-    setExpandedCategories(prev => ({
-      ...prev,
-      [category]: true
-    }))
+    setExpandedCategories(prev => ({ ...prev, [category]: true }))
 
     const newUrl = `${window.location.pathname}?category=${category}&module=${moduleId}`
     window.history.pushState({ path: newUrl }, '', newUrl)
+    if (window.innerWidth <= 900) window.scrollTo({ top: 0 })
   }
 
   const toggleCategory = (category: keyof DocsData) => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      [category]: !prev[category]
-    }))
+    setExpandedCategories(prev => ({ ...prev, [category]: !prev[category] }))
   }
 
   const activeModule = docsData[selectedCategory]?.find(m => m.id === selectedModuleId) || docsData.general[0]
@@ -132,14 +132,7 @@ function DocsContent() {
   const getFilteredData = () => {
     if (!searchQuery) return docsData
 
-    const filtered: DocsData = {
-      general: [],
-      visual: [],
-      combat: [],
-      movement: [],
-      utility: [],
-      core: [],
-    }
+    const filtered: DocsData = { general: [], visual: [], combat: [], movement: [], utility: [], core: [] }
 
     Object.keys(docsData).forEach((key) => {
       const cat = key as keyof DocsData
@@ -158,19 +151,29 @@ function DocsContent() {
 
   return (
     <>
-      {/* Mobile Sidebar Toggle */}
+      {/* Mobile: bar showing the current page, opens the drawer */}
       <button
         className={styles.mobileToggle}
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        aria-label="Toggle navigation sidebar"
+        onClick={() => setIsSidebarOpen(true)}
+        aria-label="Open navigation sidebar"
         aria-expanded={isSidebarOpen}
+        aria-controls="docs-sidebar"
       >
-        {isSidebarOpen ? '✕ Close Sidebar' : '☰ Open Sidebar'}
+        <span aria-hidden="true">☰</span>
+        <span className={styles.mobileToggleText}>{activeModule?.name ?? 'Documentation'}</span>
       </button>
 
-      {/* Sidebar Panel */}
-      <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ''}`}>
+      {isSidebarOpen && (
+        <div className={styles.backdrop} onClick={() => setIsSidebarOpen(false)} aria-hidden="true" />
+      )}
+
+      <aside id="docs-sidebar" className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.sidebarSticky}>
+          <div className={styles.drawerHead}>
+            <span>Documentation</span>
+            <button type="button" className={styles.drawerClose} onClick={() => setIsSidebarOpen(false)} aria-label="Close navigation sidebar">✕</button>
+          </div>
+
           <div className={styles.searchWrapper}>
             <input
               type="text"
@@ -186,15 +189,7 @@ function DocsContent() {
                 aria-label="Clear search"
                 type="button"
               >
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                >
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
                   <line x1="1.5" y1="1.5" x2="8.5" y2="8.5" />
                   <line x1="8.5" y1="1.5" x2="1.5" y2="8.5" />
                 </svg>
@@ -243,7 +238,6 @@ function DocsContent() {
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <main className={styles.contentArea}>
         {activeModule ? (
           <article className={styles.docArticle}>
@@ -258,10 +252,7 @@ function DocsContent() {
             </header>
 
             {renderedContent ? (
-              <div
-                className={styles.docBody}
-                dangerouslySetInnerHTML={{ __html: renderedContent }}
-              />
+              <div className={styles.docBody} dangerouslySetInnerHTML={{ __html: renderedContent }} />
             ) : (
               <div className={styles.comingSoonBox}>
                 <p className={styles.comingSoonSimple}>Documentation is Coming Soon...</p>
@@ -291,12 +282,7 @@ export default function DocsPage() {
           <>
             <aside className={styles.sidebar}>
               <div className={styles.searchWrapper}>
-                <input
-                  type="text"
-                  placeholder="Search modules..."
-                  className={styles.searchInput}
-                  disabled
-                />
+                <input type="text" placeholder="Search modules..." className={styles.searchInput} disabled />
               </div>
             </aside>
             <main className={styles.contentArea}>
@@ -311,7 +297,7 @@ export default function DocsPage() {
       </div>
 
       <footer className={styles.footer}>
-        <p>&copy; 2025 - 2026 TorioGhost Client</p>
+        <p>&copy; 2025 - 2026 TorioGhost External</p>
       </footer>
     </div>
   )

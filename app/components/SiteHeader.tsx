@@ -17,24 +17,29 @@ const EXTERNAL_LINKS = [
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 
 export default function SiteHeader() {
-  const pathname = usePathname()
+  const pathname = usePathname() ?? '/'
+
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`)
 
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <Link href="/" className={styles.brand}>
-          <img src={`${BASE}/images/icon.png`} alt="" className={styles.brandIcon} />
-          <span>Torio Client</span>
+        <Link href="/" className={styles.brand} aria-label="TorioGhost External home">
+          <img src={`${BASE}/images/icon.png`} alt="" className={styles.brandIcon} width={28} height={28} />
+          <span>
+            TorioGhost<span className={styles.brandSub}> External</span>
+          </span>
         </Link>
         <nav className={styles.nav} aria-label="Main navigation">
           {NAV_ITEMS.map((item) => {
-            const isActive = pathname === item.href
+            const active = isActive(item.href)
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
-                aria-current={isActive ? 'page' : undefined}
+                className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
+                aria-current={active ? 'page' : undefined}
               >
                 {item.label}
               </Link>
@@ -47,7 +52,7 @@ export default function SiteHeader() {
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.navLink}
+              className={`${styles.navLink} ${styles.navExternal}`}
             >
               {item.label}
             </a>
