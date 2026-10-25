@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://torioghost.net"),
   title: "TorioGhost External - external ghost client for Minecraft Bedrock",
   description:
-    "71 modules, dual GUI modes, a built-in version switcher and configs that stick. External ghost client for Minecraft Bedrock, versions 26.30 through 26.52 on Windows.",
+    "70+ modules, dual GUI modes, a built-in version switcher and configs that stick. External ghost client for Minecraft Bedrock, versions 26.30 through 26.52 on Windows.",
   applicationName: "TorioGhost External",
   icons: {
     icon: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "TorioGhost External",
     description:
-      "External ghost client for Minecraft Bedrock. 71 modules, dual GUI, 26.30 - 26.52.",
+      "External ghost client for Minecraft Bedrock. 70+ modules, dual GUI, 26.30 - 26.52.",
     url: "https://torioghost.net",
     siteName: "TorioGhost External",
     images: [
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "TorioGhost External",
     description:
-      "External ghost client for Minecraft Bedrock. 71 modules, dual GUI, 26.30 - 26.52.",
+      "External ghost client for Minecraft Bedrock. 70+ modules, dual GUI, 26.30 - 26.52.",
     images: [`${basePath}/images/icon.png`],
   },
 };

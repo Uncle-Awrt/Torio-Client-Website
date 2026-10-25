@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import SiteHeader from './components/SiteHeader'
+import HeroParticles from './components/HeroParticles'
 import styles from './page.module.css'
 import downloadsData from '../data/downloads.json'
 
@@ -16,7 +17,7 @@ const asset = (path: string) => `${BASE}${path.startsWith('/') ? path : `/${path
 
 const DOCS_ENABLED = !!process.env.NEXT_PUBLIC_DOCS_ENABLED
 
-const TOTAL_MODULES = 71
+const TOTAL_MODULES = '70+'
 const MODULE_CATEGORIES = [
   { id: 'visual', label: 'Visual', count: 25 },
   { id: 'combat', label: 'Combat', count: 18 },
@@ -119,6 +120,20 @@ function GuiShowcase() {
             </button>
           ))}
         </div>
+      </div>
+
+      <div className={styles.showcaseFrame} role="tabpanel">
+        {/* blurred copy fills the letterbox when the screenshot isn't 16:9 */}
+        <div className={styles.showcaseBackdrop} style={{ backgroundImage: `url(${asset(shot.src)})` }} aria-hidden="true" />
+        <img key={shot.src} src={asset(shot.src)} alt={shot.alt} width={shot.w} height={shot.h} className={styles.showcaseImage} loading="lazy" />
+      </div>
+
+      <div className={styles.showcaseCaption}>
+        <div className={styles.showcaseText}>
+          <h3>{mode.title}</h3>
+          <p>{mode.body}</p>
+        </div>
+        {/* under the image so it reads as "change this picture" */}
         {mode.solid && (
           <div className={styles.themeSwitch} role="group" aria-label="GUI style">
             {[false, true].map((g) => (
@@ -135,17 +150,6 @@ function GuiShowcase() {
           </div>
         )}
       </div>
-
-      <div className={styles.showcaseFrame} role="tabpanel">
-        {/* blurred copy fills the letterbox when the screenshot isn't 16:9 */}
-        <div className={styles.showcaseBackdrop} style={{ backgroundImage: `url(${asset(shot.src)})` }} aria-hidden="true" />
-        <img key={shot.src} src={asset(shot.src)} alt={shot.alt} width={shot.w} height={shot.h} className={styles.showcaseImage} loading="lazy" />
-      </div>
-
-      <div className={styles.showcaseCaption}>
-        <h3>{mode.title}</h3>
-        <p>{mode.body}</p>
-      </div>
     </div>
   )
 }
@@ -155,7 +159,6 @@ export default function Home() {
   const latestUrl = downloadsData.latestUrl || REPO_RELEASES_URL
   const exeUrl = downloadsData.exeUrl ?? null
   const zipUrl = downloadsData.zipUrl ?? null
-  const heroVisualRef = useRef<HTMLDivElement>(null)
 
   // scroll reveal
   useEffect(() => {
@@ -186,20 +189,6 @@ export default function Home() {
     return () => document.removeEventListener('pointermove', onMove)
   }, [])
 
-  const onHeroMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    const el = heroVisualRef.current
-    if (!el || e.pointerType !== 'mouse') return
-    const r = el.getBoundingClientRect()
-    const x = (e.clientX - r.left) / r.width - 0.5
-    const y = (e.clientY - r.top) / r.height - 0.5
-    el.style.setProperty('--ry', `${x * 8}deg`)
-    el.style.setProperty('--rx', `${-y * 8}deg`)
-  }
-  const onHeroLeave = () => {
-    heroVisualRef.current?.style.setProperty('--ry', '0deg')
-    heroVisualRef.current?.style.setProperty('--rx', '0deg')
-  }
-
   return (
     <div className={styles.container}>
       <div className={styles.background} aria-hidden="true" />
@@ -208,10 +197,11 @@ export default function Home() {
 
       <main className={styles.main}>
         <section className={styles.hero}>
+          <HeroParticles className={styles.heroParticles} />
           <div className={styles.heroText}>
-            <h1 className={styles.title}>TorioGhost External</h1>
+            <h1 className={styles.title}>TorioGhost</h1>
             <p className={styles.subtitle}>
-              an external client for minecraft bedrock. {TOTAL_MODULES} modules, a glass gui, a hud editor and cosmetics, all running from outside the game.
+              A free external ghost client for Minecraft Bedrock
             </p>
             <div className={styles.actions}>
               <DownloadButton large exeUrl={exeUrl} zipUrl={zipUrl} latestUrl={latestUrl} />
@@ -225,16 +215,6 @@ export default function Home() {
               </li>
               <li>windows 10 &amp; 11</li>
             </ul>
-          </div>
-
-          <div className={styles.heroVisual} ref={heroVisualRef} onPointerMove={onHeroMove} onPointerLeave={onHeroLeave}>
-            <div className={styles.heroGlow} aria-hidden="true" />
-            <div className={styles.heroShot}>
-              <img src={asset('images/gui_window.webp')} alt="TorioGhost External GUI open over Minecraft" width={1919} height={1079} />
-            </div>
-            <div className={styles.heroFloat}>
-              <img src={asset('images/connect_screen.webp')} alt="Connect screen" width={771} height={610} />
-            </div>
           </div>
         </section>
 
@@ -331,6 +311,9 @@ export default function Home() {
             <DownloadButton large exeUrl={exeUrl} zipUrl={zipUrl} latestUrl={latestUrl} />
             <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className={`${styles.button} ${styles.ghostButton}`}>Join the Discord</a>
           </div>
+          <p className={styles.safeNote}>
+            Antivirus warning? <Link href="/docs?category=start&module=IsItSafe">Why it happens and how to check the file</Link>
+          </p>
         </section>
       </main>
 

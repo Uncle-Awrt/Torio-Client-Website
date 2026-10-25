@@ -12,10 +12,6 @@ export default function ShopPage() {
       <SiteHeader />
 
       <main className={styles.main}>
-        <section className={styles.hero}>
-          <h1 className={styles.title}>Store</h1>
-        </section>
-
         <section className={styles.cta} aria-labelledby="shop-cta-heading">
           <div>
             <h2 id="shop-cta-heading" className={styles.ctaTitle}>hear about it first</h2>
