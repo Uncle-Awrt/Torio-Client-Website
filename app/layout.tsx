@@ -17,19 +17,43 @@ const poetsenOne = localFont({
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export const metadata: Metadata = {
-  title: "Torio Client - external ghost client for Minecraft Bedrock",
+  metadataBase: new URL("https://torioghost.net"),
+  title: "TorioGhost External - external ghost client for Minecraft Bedrock",
   description:
     "71 modules, dual GUI modes, a built-in version switcher and configs that stick. External ghost client for Minecraft Bedrock, versions 26.30 through 26.52 on Windows.",
-  applicationName: "Torio Client",
+  applicationName: "TorioGhost External",
   icons: {
-    icon: `${basePath}/images/icon.png`,
+    icon: [
+      { url: `${basePath}/favicon.ico`, sizes: "any" },
+      { url: `${basePath}/images/icon.png`, type: "image/png", sizes: "256x256" },
+    ],
     shortcut: `${basePath}/favicon.ico`,
+    apple: [
+      { url: `${basePath}/apple-touch-icon.png`, sizes: "256x256", type: "image/png" },
+    ],
   },
   openGraph: {
-    title: "Torio Client",
+    title: "TorioGhost External",
     description:
       "External ghost client for Minecraft Bedrock. 71 modules, dual GUI, 26.30 - 26.52.",
+    url: "https://torioghost.net",
+    siteName: "TorioGhost External",
+    images: [
+      {
+        url: `${basePath}/images/icon.png`,
+        width: 256,
+        height: 256,
+        alt: "Torio Logo",
+      },
+    ],
     type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "TorioGhost External",
+    description:
+      "External ghost client for Minecraft Bedrock. 71 modules, dual GUI, 26.30 - 26.52.",
+    images: [`${basePath}/images/icon.png`],
   },
 };
 
