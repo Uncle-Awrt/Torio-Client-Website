@@ -1,0 +1,171 @@
+/* same palette as the home page (app/page.module.css) */
+.container {
+  --accent: #ff3d7f;
+  --accent-deep: #e8256a;
+  --accent-soft: #ff6b9d;
+  --accent-glow: rgba(255, 61, 127, 0.45);
+  --text: #f4f1f5;
+  --muted: #a39dab;
+  --faint: #6f6a78;
+  --bg: #0a0a0f;
+  --surface: rgba(255, 255, 255, 0.025);
+  --surface-2: rgba(255, 255, 255, 0.045);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --border: var(--line);
+  --font-display: var(--font-poetsen-one), sans-serif;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  min-height: 100dvh;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-geist-sans), sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% -5%, rgba(255, 61, 127, 0.16), transparent 70%),
+    var(--bg);
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(4rem, 10vw, 7rem) 1.5rem 4rem;
+}
+
+/* hero */
+.hero {
+  text-align: center;
+  margin-bottom: clamp(3rem, 7vw, 4.5rem);
+}
+
+.hero > * {
+  animation: rise 0.8s var(--ease-out) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3.2rem, 9vw, 5.5rem);
+  line-height: 1;
+  margin: 0;
+  color: var(--accent);
+  text-shadow:
+    0 0 18px rgba(255, 61, 127, 0.55),
+    0 0 48px rgba(255, 61, 127, 0.25);
+}
+
+/* discord cta */
+.cta {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1.6rem 1.8rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse 60% 120% at 100% 50%, rgba(255, 61, 127, 0.12), transparent 70%),
+    var(--surface);
+  animation: rise 0.8s var(--ease-out) 360ms both;
+}
+
+.ctaTitle {
+  margin: 0 0 0.3rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.ctaBody {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.discordButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-deep) 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 8px 24px -6px var(--accent-glow);
+  transition: box-shadow 0.2s ease, transform 0.2s var(--ease-out);
+}
+
+.discordButton span {
+  transition: transform 0.2s var(--ease-out);
+}
+
+.discordButton:hover {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 10px 34px -4px rgba(255, 61, 127, 0.65);
+}
+
+.discordButton:hover span {
+  transform: translateX(3px);
+}
+
+.discordButton:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* footer */
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 1.5rem 2.5rem;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 820px) {
+  .cta {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .discordButton {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero > *,
+  .cta {
+    animation: none;
+  }
+}

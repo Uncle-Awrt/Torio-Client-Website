@@ -19,7 +19,7 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 export const metadata: Metadata = {
   title: "Torio Client - external ghost client for Minecraft Bedrock",
   description:
-    "38 modules, dual GUI modes, a built-in version switcher and configs that stick. External ghost client for Minecraft Bedrock, v26.20 through v26.45 on Windows.",
+    "71 modules, dual GUI modes, a built-in version switcher and configs that stick. External ghost client for Minecraft Bedrock, versions 26.30 through 26.52 on Windows.",
   applicationName: "Torio Client",
   icons: {
     icon: `${basePath}/images/icon.png`,
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Torio Client",
     description:
-      "External ghost client for Minecraft Bedrock. 38 modules, dual GUI, v26.20 - v26.45.",
+      "External ghost client for Minecraft Bedrock. 71 modules, dual GUI, 26.30 - 26.52.",
     type: "website",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0f0a1a",
+  themeColor: "#0a0a0f",
   width: "device-width",
   initialScale: 1,
 };
@@ -45,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body
         className={`${geistSans.variable} ${poetsenOne.variable} antialiased`}
       >

@@ -1,6 +1,11 @@
+import fs from "node:fs";
 import type { NextConfig } from "next";
 
-const basePath = process.env.NODE_ENV === "production" ? "/Torio-Client-Website" : "";
+// Docs are local-only until finished (public-docs.json is gitignored), so CI builds hide them.
+const docsEnabled = fs.existsSync("data/public-docs.json");
+
+// Served from the root of a custom domain, so no basePath is needed.
+const basePath = "";
 
 const nextConfig: NextConfig = {
   devIndicators: false,
@@ -12,6 +17,7 @@ const nextConfig: NextConfig = {
   },
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,
+    NEXT_PUBLIC_DOCS_ENABLED: docsEnabled ? "1" : "",
   },
 };
 

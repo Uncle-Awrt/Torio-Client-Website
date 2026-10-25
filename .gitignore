@@ -45,3 +45,4 @@ next-env.d.ts
 /data/compiled-docs.json
 /scripts/compile-docs.mjs
 /scripts/generate-default-docs.mjs
+/scripts/mathcheck.mjs

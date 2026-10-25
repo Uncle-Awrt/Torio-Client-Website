@@ -9,7 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "katex": "^0.16.22",
     "marked": "^18.0.7",
+    "marked-katex-extension": "^5.1.13",
     "next": "^16.2.10",
     "react": "19.2.7",
     "react-dom": "19.2.7"

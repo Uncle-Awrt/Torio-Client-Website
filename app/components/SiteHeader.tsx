@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import styles from './SiteHeader.module.css'
 
+// Docs stays in the nav even while unpublished; /docs shows a coming-soon page then
 const NAV_ITEMS = [
   { href: '/', label: 'Home' },
+  { href: '/shop', label: 'Shop' },
   { href: '/docs', label: 'Docs' },
 ]
 

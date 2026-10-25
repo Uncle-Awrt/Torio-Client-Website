@@ -1,301 +1,31 @@
-'use client'
-
-import { useState, useEffect, useMemo, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { marked } from 'marked'
+import fs from 'node:fs'
+import path from 'node:path'
 import SiteHeader from '../components/SiteHeader'
+import DocsClient, { type DocsData } from './DocsClient'
 import styles from './docs.module.css'
-import docsDataJson from '../../data/public-docs.json'
 
-interface DocModule {
-  id: string
-  name: string
-  description: string
-  content?: string
-}
-
-interface DocsData {
-  general: DocModule[]
-  visual: DocModule[]
-  combat: DocModule[]
-  movement: DocModule[]
-  utility: DocModule[]
-  core: DocModule[]
-}
-
-const docsData = docsDataJson as unknown as DocsData
-
-const CATEGORY_LABELS: Record<keyof DocsData, string> = {
-  general: 'General',
-  visual: 'Visual Modules',
-  combat: 'Combat Modules',
-  movement: 'Movement Modules',
-  utility: 'Utility Modules',
-  core: 'Core Subsystems',
-}
-
-function DocsContent() {
-  const searchParams = useSearchParams()
-
-  const getInitialState = () => {
-    const catParam = searchParams.get('category') as keyof DocsData
-    const modParam = searchParams.get('module')
-
-    let category: keyof DocsData = 'general'
-    let moduleId = ''
-
-    if (catParam && docsData[catParam]) {
-      category = catParam
-      if (modParam && docsData[catParam].some(m => m.id === modParam)) {
-        moduleId = modParam
-      } else if (docsData[catParam].length > 0) {
-        moduleId = docsData[catParam][0].id
-      }
-    } else {
-      category = 'general'
-      if (docsData.general.length > 0) {
-        moduleId = docsData.general[0].id
-      }
-    }
-    return { category, moduleId }
-  }
-
-  const initialState = getInitialState()
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<keyof DocsData>(initialState.category)
-  const [selectedModuleId, setSelectedModuleId] = useState(initialState.moduleId)
-  const [expandedCategories, setExpandedCategories] = useState<Record<keyof DocsData, boolean>>({
-    general: initialState.category === 'general',
-    visual: initialState.category === 'visual',
-    combat: initialState.category === 'combat',
-    movement: initialState.category === 'movement',
-    utility: initialState.category === 'utility',
-    core: initialState.category === 'core',
-  })
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-
-  useEffect(() => {
-    const catParam = searchParams.get('category') as keyof DocsData
-    const modParam = searchParams.get('module')
-
-    if (catParam && docsData[catParam]) {
-      setSelectedCategory(catParam)
-      if (modParam && docsData[catParam].some(m => m.id === modParam)) {
-        setSelectedModuleId(modParam)
-      } else if (docsData[catParam].length > 0) {
-        setSelectedModuleId(docsData[catParam][0].id)
-      }
-      setExpandedCategories(prev => ({ ...prev, [catParam]: true }))
-    } else {
-      setSelectedCategory('general')
-      if (docsData.general.length > 0) {
-        setSelectedModuleId(docsData.general[0].id)
-      }
-      setExpandedCategories(prev => ({ ...prev, general: true }))
-    }
-  }, [searchParams])
-
-  // mobile drawer: Esc closes it, and the page behind doesn't scroll while it's open
-  useEffect(() => {
-    if (!isSidebarOpen) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setIsSidebarOpen(false) }
-    document.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
-  }, [isSidebarOpen])
-
-  const selectModule = (category: keyof DocsData, moduleId: string) => {
-    setSelectedCategory(category)
-    setSelectedModuleId(moduleId)
-    setIsSidebarOpen(false)
-    setExpandedCategories(prev => ({ ...prev, [category]: true }))
-
-    const newUrl = `${window.location.pathname}?category=${category}&module=${moduleId}`
-    window.history.pushState({ path: newUrl }, '', newUrl)
-    if (window.innerWidth <= 900) window.scrollTo({ top: 0 })
-  }
-
-  const toggleCategory = (category: keyof DocsData) => {
-    setExpandedCategories(prev => ({ ...prev, [category]: !prev[category] }))
-  }
-
-  const activeModule = docsData[selectedCategory]?.find(m => m.id === selectedModuleId) || docsData.general[0]
-
-  const renderedContent = useMemo(() => {
-    if (!activeModule?.content) return ''
-    return marked.parse(activeModule.content, { async: false }) as string
-  }, [activeModule?.content])
-
-  const getFilteredData = () => {
-    if (!searchQuery) return docsData
-
-    const filtered: DocsData = { general: [], visual: [], combat: [], movement: [], utility: [], core: [] }
-
-    Object.keys(docsData).forEach((key) => {
-      const cat = key as keyof DocsData
-      filtered[cat] = docsData[cat].filter(
-        (m) =>
-          m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          m.description.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    })
-
-    return filtered
-  }
-
-  const filteredData = getFilteredData()
-  const hasMatches = (cat: keyof DocsData) => filteredData[cat].length > 0
-
-  return (
-    <>
-      {/* Mobile: bar showing the current page, opens the drawer */}
-      <button
-        className={styles.mobileToggle}
-        onClick={() => setIsSidebarOpen(true)}
-        aria-label="Open navigation sidebar"
-        aria-expanded={isSidebarOpen}
-        aria-controls="docs-sidebar"
-      >
-        <span aria-hidden="true">☰</span>
-        <span className={styles.mobileToggleText}>{activeModule?.name ?? 'Documentation'}</span>
-      </button>
-
-      {isSidebarOpen && (
-        <div className={styles.backdrop} onClick={() => setIsSidebarOpen(false)} aria-hidden="true" />
-      )}
-
-      <aside id="docs-sidebar" className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ''}`}>
-        <div className={styles.sidebarSticky}>
-          <div className={styles.drawerHead}>
-            <span>Documentation</span>
-            <button type="button" className={styles.drawerClose} onClick={() => setIsSidebarOpen(false)} aria-label="Close navigation sidebar">✕</button>
-          </div>
-
-          <div className={styles.searchWrapper}>
-            <input
-              type="text"
-              placeholder="Search modules..."
-              className={styles.searchInput}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {searchQuery && (
-              <button
-                className={styles.searchClear}
-                onClick={() => setSearchQuery('')}
-                aria-label="Clear search"
-                type="button"
-              >
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                  <line x1="1.5" y1="1.5" x2="8.5" y2="8.5" />
-                  <line x1="8.5" y1="1.5" x2="1.5" y2="8.5" />
-                </svg>
-              </button>
-            )}
-          </div>
-
-          <nav className={styles.navMenu} aria-label="Documentation navigation">
-            {(Object.keys(CATEGORY_LABELS) as Array<keyof DocsData>).map((catKey) => {
-              if (searchQuery && !hasMatches(catKey)) return null
-              const list = filteredData[catKey]
-              const isExpanded = searchQuery ? hasMatches(catKey) : !!expandedCategories[catKey]
-
-              return (
-                <div key={catKey} className={styles.navSection}>
-                  <button
-                    className={styles.sectionHeader}
-                    onClick={() => toggleCategory(catKey)}
-                    aria-expanded={isExpanded}
-                  >
-                    <span>{CATEGORY_LABELS[catKey]}</span>
-                    <span className={`${styles.arrow} ${isExpanded ? styles.arrowExpanded : ''}`}>▾</span>
-                  </button>
-
-                  {isExpanded && (
-                    <ul className={styles.moduleList}>
-                      {list.map((mod) => {
-                        const isActive = selectedCategory === catKey && selectedModuleId === mod.id
-                        return (
-                          <li key={mod.id}>
-                            <button
-                              onClick={() => selectModule(catKey, mod.id)}
-                              className={`${styles.moduleButton} ${isActive ? styles.moduleButtonActive : ''}`}
-                            >
-                              {mod.name}
-                            </button>
-                          </li>
-                        )
-                      })}
-                    </ul>
-                  )}
-                </div>
-              )
-            })}
-          </nav>
-        </div>
-      </aside>
-
-      <main className={styles.contentArea}>
-        {activeModule ? (
-          <article className={styles.docArticle}>
-            <header className={styles.articleHeader}>
-              <div className={styles.categoryBreadcrumb}>
-                Documentation / {CATEGORY_LABELS[selectedCategory]}
-              </div>
-              <h1 className={styles.articleTitle}>{activeModule.name}</h1>
-              {activeModule.description && (
-                <p className={styles.articleDescription}>{activeModule.description}</p>
-              )}
-            </header>
-
-            {renderedContent ? (
-              <div className={styles.docBody} dangerouslySetInnerHTML={{ __html: renderedContent }} />
-            ) : (
-              <div className={styles.comingSoonBox}>
-                <p className={styles.comingSoonSimple}>Documentation is Coming Soon...</p>
-              </div>
-            )}
-          </article>
-        ) : (
-          <div className={styles.emptyState}>
-            <h2>No Module Selected</h2>
-            <p>Please select a documentation topic from the sidebar.</p>
-          </div>
-        )}
-      </main>
-    </>
-  )
-}
+// public-docs.json is gitignored while the docs are unfinished, so CI builds
+// (and therefore the live site) get the placeholder below instead.
+const DOCS_FILE = path.join(process.cwd(), 'data', 'public-docs.json')
 
 export default function DocsPage() {
+  if (fs.existsSync(DOCS_FILE)) {
+    const docsData = JSON.parse(fs.readFileSync(DOCS_FILE, 'utf8')) as DocsData
+    return <DocsClient docsData={docsData} />
+  }
+
   return (
     <div className={styles.page}>
       <SiteHeader />
-
       <div className={styles.background} />
-
       <div className={styles.docsContainer}>
-        <Suspense fallback={
-          <>
-            <aside className={styles.sidebar}>
-              <div className={styles.searchWrapper}>
-                <input type="text" placeholder="Search modules..." className={styles.searchInput} disabled />
-              </div>
-            </aside>
-            <main className={styles.contentArea}>
-              <div className={styles.emptyState}>
-                <p>Loading documentation...</p>
-              </div>
-            </main>
-          </>
-        }>
-          <DocsContent />
-        </Suspense>
+        <main className={styles.contentArea}>
+          <div className={styles.emptyState}>
+            <h2>Documentation is coming soon</h2>
+            <p>The docs are still being written. Ask in the Discord in the meantime.</p>
+          </div>
+        </main>
       </div>
-
       <footer className={styles.footer}>
         <p>&copy; 2025 - 2026 TorioGhost External</p>
       </footer>
