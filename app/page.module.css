@@ -819,8 +819,19 @@
     border-radius: 12px;
   }
 
+  /* connect and go: one screenshot only, so nothing pokes out of the card */
   .stack {
     border: 0;
+    aspect-ratio: auto;
+  }
+
+  .stack .stackBack {
+    display: none;
+  }
+
+  .stack .stackFront {
+    position: static;
+    width: 100%;
   }
 
   .moduleList {
