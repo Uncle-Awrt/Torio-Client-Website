@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import SiteHeader from './components/SiteHeader'
-import HeroParticles from './components/HeroParticles'
 import styles from './page.module.css'
 import downloadsData from '../data/downloads.json'
 
@@ -19,10 +18,39 @@ const DOCS_ENABLED = !!process.env.NEXT_PUBLIC_DOCS_ENABLED
 
 const TOTAL_MODULES = '70+'
 const MODULE_CATEGORIES = [
-  { id: 'visual', label: 'Visual', count: 25 },
-  { id: 'combat', label: 'Combat', count: 18 },
-  { id: 'movement', label: 'Movement', count: 13 },
-  { id: 'utility', label: 'Utility & Settings', count: 15 },
+  { id: 'combat', label: 'Combat', count: 18, examples: ['Aim Assist', 'TriggerBot', 'Reach', 'Auto Crystal'] },
+  { id: 'movement', label: 'Movement', count: 14, examples: ['Velocity', 'Clutch', 'Toggle Sprint', 'Timer'] },
+  { id: 'visual', label: 'Visual', count: 27, examples: ['ESP', 'NameTag', 'Emote', 'Radar'] },
+  { id: 'utility', label: 'Utility & Settings', count: 15, examples: ['Blink', 'Stream Hide', 'Ore Miner', 'Auto 360'] },
+]
+
+// features shown as alternating screenshot / text rows
+const FEATURES = [
+  {
+    title: 'HUD Editor',
+    body: 'Drag the watermark, Array List, Radar, media player and notifications anywhere on screen, and resize them.',
+    img: { src: 'images/hud_editor.webp', w: 1919, h: 1079, alt: 'HUD editor with movable Watermark, ArrayList, Radar, Media Player and Notifications boxes' },
+  },
+  {
+    title: 'Emotes',
+    body: 'Hold B to open the emote wheel: 30 emotes from a wave to a breakdown dance, on five pages. Your cosmetics follow the pose.',
+    img: { src: 'images/emote_wheel.webp', w: 1600, h: 1000, alt: 'Emote wheel open over the game, on the Party page with Shuffle selected' },
+  },
+  {
+    title: 'Cosmetics',
+    body: 'Hats, capes, wings and pets on your own character, with a 3D preview. Only you see them.',
+    img: { src: 'images/cosmetics.webp', w: 1628, h: 671, alt: 'Cosmetics tab with a 3D preview next to a Minecraft player wearing wings and a bandana' },
+  },
+  {
+    title: 'Version Switcher',
+    body: 'Download and install any supported Minecraft version from the connect screen.',
+    img: { src: 'images/version_switcher.webp', w: 767, h: 607, alt: 'Switch Minecraft Version screen listing versions' },
+  },
+  {
+    title: 'Connect in one click',
+    body: 'Start Minecraft, press Connect, and the GUI opens. Close the game and the client waits for the next one.',
+    img: { src: 'images/connect_screen.webp', w: 771, h: 610, alt: 'Connect screen with Connect and Switch Version buttons' },
+  },
 ]
 
 type Shot = { src: string; w: number; h: number; alt: string }
@@ -32,24 +60,24 @@ const GUI_MODES: { id: string; label: string; title: string; body: string; glass
   {
     id: 'window',
     label: 'Window',
-    title: 'one window, every module',
-    body: 'categories on the left, toggles and settings on the right. search jumps straight to a module.',
+    title: 'One window, every module',
+    body: 'Categories on the left, toggles and settings on the right. Search jumps straight to a module.',
     glass: { src: 'images/gui_glass_window.webp', w: 1919, h: 1079, alt: 'Glass-mode GUI window over Minecraft, showing Visual modules' },
     solid: { src: 'images/gui_window.webp', w: 1919, h: 1079, alt: 'Solid-mode GUI window over Minecraft, showing Visual modules' },
   },
   {
     id: 'clickgui',
     label: 'Click GUI',
-    title: 'everything open at once',
-    body: 'a panel per category, laid out across the screen. enabled modules light up pink.',
+    title: 'Every category open at once',
+    body: 'One panel per category across the screen. Enabled modules light up pink.',
     glass: { src: 'images/gui_glass_clickgui.webp', w: 1919, h: 1079, alt: 'Glass-mode click GUI with Combat, Movement, Visual, Utility and Client panels' },
     solid: { src: 'images/gui_ingame.webp', w: 1919, h: 1079, alt: 'Solid-mode click GUI with Combat, Movement, Visual, Utility and Client panels' },
   },
   {
     id: 'external',
     label: 'External',
-    title: 'or keep it out of the game',
-    body: 'run the gui as its own window next to minecraft, so nothing is drawn over your screen.',
+    title: 'Or keep it out of the game',
+    body: 'Run the GUI as its own window next to Minecraft, so nothing is drawn over the game.',
     glass: { src: 'images/gui_external_side.webp', w: 1633, h: 689, alt: 'External GUI window running next to the Minecraft window' },
   },
 ]
@@ -160,34 +188,9 @@ export default function Home() {
   const exeUrl = downloadsData.exeUrl ?? null
   const zipUrl = downloadsData.zipUrl ?? null
 
-  // scroll reveal
-  useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>('[data-reveal]')
-    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      els.forEach((el) => el.classList.add(styles.revealed))
-      return
-    }
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) { e.target.classList.add(styles.revealed); io.unobserve(e.target) }
-      })
-    }, { threshold: 0.12 })
-    els.forEach((el) => io.observe(el))
-    return () => io.disconnect()
-  }, [])
-
-  // cursor spotlight on cards: each [data-spot] gets --mx/--my relative to itself
-  useEffect(() => {
-    const onMove = (e: PointerEvent) => {
-      const el = (e.target as Element | null)?.closest?.<HTMLElement>('[data-spot]')
-      if (!el) return
-      const r = el.getBoundingClientRect()
-      el.style.setProperty('--mx', `${e.clientX - r.left}px`)
-      el.style.setProperty('--my', `${e.clientY - r.top}px`)
-    }
-    document.addEventListener('pointermove', onMove)
-    return () => document.removeEventListener('pointermove', onMove)
-  }, [])
+  const onMascotClick = () => {
+    if (Math.random() < 0.01) new Audio(asset('sounds/easteregg.wav')).play().catch(() => {})
+  }
 
   return (
     <div className={styles.container}>
@@ -197,12 +200,13 @@ export default function Home() {
 
       <main className={styles.main}>
         <section className={styles.hero}>
-          <HeroParticles className={styles.heroParticles} />
+          {/* the app icon; like in the client, clicking it has a 1% chance of the easter-egg sound */}
+          <button type="button" className={styles.mascot} onClick={onMascotClick} aria-label="Torio">
+            <img src={asset('images/icon.png')} alt="" width={256} height={256} />
+          </button>
           <div className={styles.heroText}>
             <h1 className={styles.title}>TorioGhost</h1>
-            <p className={styles.subtitle}>
-              A free external ghost client for Minecraft Bedrock
-            </p>
+            <p className={styles.subtitle}>A free external ghost client for Minecraft Bedrock</p>
             <div className={styles.actions}>
               <DownloadButton large exeUrl={exeUrl} zipUrl={zipUrl} latestUrl={latestUrl} />
               <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className={`${styles.button} ${styles.ghostButton}`}>GitHub</a>
@@ -213,100 +217,69 @@ export default function Home() {
                 <img src={asset('download.svg')} alt="" className={styles.downloadsIcon} width={16} height={16} aria-hidden="true" />
                 {downloads.toLocaleString()} downloads
               </li>
-              <li>windows 10 &amp; 11</li>
+              <li>Bedrock 26.30 – 26.60</li>
+              <li>Windows 10 &amp; 11</li>
             </ul>
           </div>
         </section>
 
-        <section className={styles.section} aria-labelledby="modules-heading" data-reveal>
-          <div className={styles.moduleStrip}>
-            <div className={styles.moduleTotal}>
-              <span id="modules-heading" className={styles.moduleTotalNum}>{TOTAL_MODULES}</span>
-              <span className={styles.moduleTotalLabel}>modules, each with its own keybind and settings</span>
-            </div>
-            <ul className={styles.moduleList}>
-              {MODULE_CATEGORIES.map((c) => {
-                const body = (
-                  <>
-                    <span className={styles.moduleCount}>{c.count}</span>
-                    <span className={styles.moduleLabel}>{c.label}</span>
-                  </>
-                )
-                return (
-                  <li key={c.id}>
-                    {DOCS_ENABLED
-                      ? <Link href={`/docs?category=${c.id}`} className={`${styles.moduleCard} ${styles.moduleCardLink}`} data-spot>{body}</Link>
-                      : <div className={styles.moduleCard} data-spot>{body}</div>}
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        </section>
-
-        <section className={styles.section} aria-labelledby="gui-heading" data-reveal>
+        <section className={styles.section} aria-labelledby="modules-heading">
           <header className={styles.sectionHead}>
-            <p className={styles.kicker}>interface</p>
-            <h2 id="gui-heading" className={styles.sectionTitle}>pick how the gui looks</h2>
-            <p className={styles.sectionIntro}>three layouts, glass or solid. switch any time in client settings.</p>
+            <h2 id="modules-heading" className={styles.sectionTitle}>{TOTAL_MODULES} modules</h2>
+            <p className={styles.sectionIntro}>Every module has its own toggle key and settings.</p>
+          </header>
+          <ul className={styles.moduleList}>
+            {MODULE_CATEGORIES.map((c) => {
+              const body = (
+                <>
+                  <span className={styles.moduleHead}>
+                    <span className={styles.moduleLabel}>{c.label}</span>
+                    <span className={styles.moduleCount}>{c.count}</span>
+                  </span>
+                  <span className={styles.moduleExamples}>{c.examples.join(', ')}, …</span>
+                </>
+              )
+              return (
+                <li key={c.id}>
+                  {DOCS_ENABLED
+                    ? <Link href={`/docs?category=${c.id}`} className={`${styles.moduleCard} ${styles.moduleCardLink}`}>{body}</Link>
+                    : <div className={styles.moduleCard}>{body}</div>}
+                </li>
+              )
+            })}
+          </ul>
+        </section>
+
+        <section className={styles.section} aria-labelledby="gui-heading">
+          <header className={styles.sectionHead}>
+            <h2 id="gui-heading" className={styles.sectionTitle}>Three ways to use the GUI</h2>
+            <p className={styles.sectionIntro}>In game as a window or a click GUI, or as a separate window next to Minecraft. Solid or glass.</p>
           </header>
           <GuiShowcase />
         </section>
 
         <section className={styles.section} aria-labelledby="features-heading">
-          <header className={styles.sectionHead} data-reveal>
-            <p className={styles.kicker}>features</p>
-            <h2 id="features-heading" className={styles.sectionTitle}>more than a module list</h2>
+          <header className={styles.sectionHead}>
+            <h2 id="features-heading" className={styles.sectionTitle}>Also in the client</h2>
           </header>
-
-          <div className={styles.bento}>
-            <article className={`${styles.tile} ${styles.tileWide}`} data-spot data-reveal>
-              <div className={styles.tileText}>
-                <h3>hud editor</h3>
-                <p>drag the watermark, arraylist, radar, media player and notifications wherever you want them.</p>
-              </div>
-              <div className={styles.tileMedia}>
-                <img src={asset('images/hud_editor.webp')} alt="HUD editor with movable Watermark, ArrayList, Radar, Media Player and Notifications boxes" width={1919} height={1079} loading="lazy" />
-              </div>
-            </article>
-
-            <article className={styles.tile} data-spot data-reveal style={{ '--d': '80ms' } as React.CSSProperties}>
-              <div className={styles.tileText}>
-                <h3>version switcher</h3>
-                <p>download and swap minecraft versions from the launcher.</p>
-              </div>
-              <div className={`${styles.tileMedia} ${styles.tileMediaInset}`}>
-                <img src={asset('images/version_switcher.webp')} alt="Switch Minecraft Version screen listing versions 26.30 to 26.45" width={767} height={607} loading="lazy" />
-              </div>
-            </article>
-
-            <article className={`${styles.tile} ${styles.tileWide}`} data-spot data-reveal>
-              <div className={styles.tileText}>
-                <h3>cosmetics</h3>
-                <p>hats, capes, back items and pets, with a live 3d preview and favorites.</p>
-              </div>
-              <div className={styles.tileMedia}>
-                <img src={asset('images/cosmetics.webp')} alt="Cosmetics tab with a 3D preview next to a Minecraft player wearing wings and a bandana" width={1628} height={671} loading="lazy" />
-              </div>
-            </article>
-
-            <article className={styles.tile} data-spot data-reveal style={{ '--d': '80ms' } as React.CSSProperties}>
-              <div className={styles.tileText}>
-                <h3>connect and go</h3>
-                <p>attach to a running game in one click.</p>
-              </div>
-              <div className={`${styles.tileMedia} ${styles.tileMediaInset} ${styles.stack}`}>
-                <img src={asset('images/loading_screen.webp')} alt="Loading screen with progress bar" width={772} height={614} loading="lazy" className={styles.stackBack} />
-                <img src={asset('images/connect_screen.webp')} alt="Connect screen with Connect and Switch Version buttons" width={771} height={610} loading="lazy" className={styles.stackFront} />
-              </div>
-            </article>
+          <div className={styles.features}>
+            {FEATURES.map((f) => (
+              <article key={f.title} className={styles.feature}>
+                <div className={styles.featureMedia}>
+                  <img src={asset(f.img.src)} alt={f.img.alt} width={f.img.w} height={f.img.h} loading="lazy" />
+                </div>
+                <div className={styles.featureText}>
+                  <h3>{f.title}</h3>
+                  <p>{f.body}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
-        <section className={`${styles.section} ${styles.cta}`} aria-labelledby="cta-heading" data-reveal>
-          <div className={styles.ctaGlow} aria-hidden="true" />
-          <h2 id="cta-heading" className={styles.ctaTitle}>ready when you are</h2>
-          <p className={styles.sectionIntro}>grab the latest release and connect to your game.</p>
+        <section className={`${styles.section} ${styles.cta}`} aria-labelledby="cta-heading">
+          <h2 id="cta-heading" className={styles.sectionTitle}>Download TorioGhost</h2>
+          <p className={styles.sectionIntro}>Free. Windows 10 and 11. Minecraft Bedrock 26.30 – 26.60.</p>
           <div className={`${styles.actions} ${styles.ctaActions}`}>
             <DownloadButton large exeUrl={exeUrl} zipUrl={zipUrl} latestUrl={latestUrl} />
             <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className={`${styles.button} ${styles.ghostButton}`}>Join the Discord</a>
