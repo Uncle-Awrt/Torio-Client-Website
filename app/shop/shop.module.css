@@ -31,8 +31,18 @@
   inset: 0;
   z-index: -3;
   background:
-    radial-gradient(ellipse 60% 45% at 50% -5%, rgba(255, 61, 127, 0.16), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 70% -10%, rgba(255, 61, 127, 0.13), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 0% 10%, rgba(255, 61, 127, 0.06), transparent 70%),
     var(--bg);
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.05;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 .main {
@@ -84,10 +94,7 @@
   padding: 1.6rem 1.8rem;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background:
-    radial-gradient(ellipse 60% 120% at 100% 50%, rgba(255, 61, 127, 0.12), transparent 70%),
-    var(--surface);
-  animation: rise 0.8s var(--ease-out) 360ms both;
+  background: var(--surface);
 }
 
 .ctaTitle {
@@ -108,29 +115,25 @@
   gap: 0.6rem;
   padding: 0.85rem 1.5rem;
   border-radius: 12px;
-  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-deep) 100%);
+  background: var(--accent);
   color: #fff;
   font-weight: 600;
   font-size: 0.98rem;
   text-decoration: none;
   white-space: nowrap;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.25) inset,
-    0 8px 24px -6px var(--accent-glow);
-  transition: box-shadow 0.2s ease, transform 0.2s var(--ease-out);
+  transition: background-color 0.2s ease;
 }
 
-.discordButton span {
+.discordButton svg {
+  flex-shrink: 0;
   transition: transform 0.2s var(--ease-out);
 }
 
 .discordButton:hover {
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.25) inset,
-    0 10px 34px -4px rgba(255, 61, 127, 0.65);
+  background: var(--accent-deep);
 }
 
-.discordButton:hover span {
+.discordButton:hover svg {
   transform: translateX(3px);
 }
 
@@ -164,8 +167,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero > *,
-  .cta {
+  .hero > * {
     animation: none;
+  }
+
+  .discordButton svg {
+    transition: none;
   }
 }

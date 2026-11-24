@@ -31,7 +31,7 @@ When in doubt, choose the plainer option.
 ### Do
 - Let the product be the visual: the chick mascot, real screenshots and real things from the client
   (its toggles, ArrayList, HUD, the duck) at real size, not decoration
-- Copy states facts a player cares about: module names, supported versions (26.30–26.60), Windows 10/11,
+- Copy states facts a player cares about: module names, supported versions (26.30–26.65), Windows 10/11,
   free. Short sentences, normal capitalisation.
 - Pink is the accent only: primary button, links, active states, the mascot. Everything else neutral.
 - Hierarchy from size and weight, not effects. Spacing on an 8px grid.

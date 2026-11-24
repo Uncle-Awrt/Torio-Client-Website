@@ -16,19 +16,19 @@ const asset = (path: string) => `${BASE}${path.startsWith('/') ? path : `/${path
 
 const DOCS_ENABLED = !!process.env.NEXT_PUBLIC_DOCS_ENABLED
 
-const TOTAL_MODULES = '70+'
+const TOTAL_MODULES = '80+'
 const MODULE_CATEGORIES = [
-  { id: 'combat', label: 'Combat', count: 18, examples: ['Aim Assist', 'TriggerBot', 'Reach', 'Auto Crystal'] },
-  { id: 'movement', label: 'Movement', count: 14, examples: ['Velocity', 'Clutch', 'Toggle Sprint', 'Timer'] },
-  { id: 'visual', label: 'Visual', count: 27, examples: ['ESP', 'NameTag', 'Emote', 'Radar'] },
-  { id: 'utility', label: 'Utility & Settings', count: 15, examples: ['Blink', 'Stream Hide', 'Ore Miner', 'Auto 360'] },
+  { id: 'combat', label: 'Combat', count: 19, examples: ['Aim Assist', 'TriggerBot', 'Reach', 'Auto Crystal'] },
+  { id: 'movement', label: 'Movement', count: 17, examples: ['Velocity', 'Clutch', 'Toggle Sprint', 'Timer'] },
+  { id: 'visual', label: 'Visual', count: 36, examples: ['ESP', 'Trajectories', 'Freecam', 'Emote'] },
+  { id: 'utility', label: 'Utility & Settings', count: 17, examples: ['Blink', 'Stream Hide', 'Ore Miner', 'Auto 360'] },
 ]
 
 // features shown as alternating screenshot / text rows
 const FEATURES = [
   {
     title: 'HUD Editor',
-    body: 'Drag the watermark, Array List, Radar, media player and notifications anywhere on screen, and resize them.',
+    body: 'Drag the watermark, Array List, Radar, Target HUD, Armor HUD, Keystrokes and the rest anywhere on screen, and resize them.',
     img: { src: 'images/hud_editor.webp', w: 1919, h: 1079, alt: 'HUD editor with movable Watermark, ArrayList, Radar, Media Player and Notifications boxes' },
   },
   {
@@ -107,7 +107,9 @@ function DownloadButton({ large, exeUrl, zipUrl, latestUrl }: { large?: boolean;
     <div className={styles.downloadWrapper} ref={wrapRef}>
       <button ref={btnRef} type="button" className={cls} onClick={() => setOpen((o) => !o)} aria-haspopup="true" aria-expanded={open}>
         Download
-        <span className={`${styles.downloadCaret} ${open ? styles.caretOpen : ''}`} aria-hidden="true">▾</span>
+        <svg className={`${styles.downloadCaret} ${open ? styles.caretOpen : ''}`} viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
+          <path d="M4.5 7.5l5.5 5.5 5.5-5.5" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
       </button>
       {open && (
         <div className={styles.downloadMenu}>
@@ -121,6 +123,45 @@ function DownloadButton({ large, exeUrl, zipUrl, latestUrl }: { large?: boolean;
           </a>
         </div>
       )}
+    </div>
+  )
+}
+
+// the mascot waddles along the footer line once, the first time the footer comes into view, then sits
+function WalkingChick() {
+  const trackRef = useRef<HTMLDivElement>(null)
+  const [state, setState] = useState<'waiting' | 'walking' | 'sat'>('waiting')
+  const [squish, setSquish] = useState(0)
+
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setState('sat'); return }
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      // ~110px per second, whatever the screen width
+      const ms = Math.min(8000, Math.max(2500, (track.offsetWidth * 0.8 / 110) * 1000))
+      track.style.setProperty('--walk-ms', `${Math.round(ms)}ms`)
+      setState('walking')
+      io.disconnect()
+    }, { rootMargin: '0px 0px -60px 0px' }) // start once the footer line is a little way into view
+    io.observe(track.parentElement ?? track)
+    return () => io.disconnect()
+  }, [])
+
+  const stateClass = state === 'walking' ? styles.chickWalking : state === 'sat' ? styles.chickSat : ''
+
+  return (
+    <div className={styles.chickTrack} ref={trackRef} aria-hidden="true">
+      <button
+        type="button"
+        tabIndex={-1}
+        className={`${styles.chick} ${stateClass}`}
+        onAnimationEnd={(e) => { if (e.target === e.currentTarget) setState('sat') }}
+        onClick={() => { if (state === 'sat') setSquish((n) => n + 1) }}
+      >
+        <img key={squish} src={asset('images/torio-chick.png')} alt="" width={218} height={218} className={squish ? styles.chickSquish : ''} />
+      </button>
     </div>
   )
 }
@@ -217,7 +258,7 @@ export default function Home() {
                 <img src={asset('download.svg')} alt="" className={styles.downloadsIcon} width={16} height={16} aria-hidden="true" />
                 {downloads.toLocaleString()} downloads
               </li>
-              <li>Bedrock 26.30 – 26.60</li>
+              <li>Bedrock 26.30 – 26.65</li>
               <li>Windows 10 &amp; 11</li>
             </ul>
           </div>
@@ -226,7 +267,6 @@ export default function Home() {
         <section className={styles.section} aria-labelledby="modules-heading">
           <header className={styles.sectionHead}>
             <h2 id="modules-heading" className={styles.sectionTitle}>{TOTAL_MODULES} modules</h2>
-            <p className={styles.sectionIntro}>Every module has its own toggle key and settings.</p>
           </header>
           <ul className={styles.moduleList}>
             {MODULE_CATEGORIES.map((c) => {
@@ -253,7 +293,6 @@ export default function Home() {
         <section className={styles.section} aria-labelledby="gui-heading">
           <header className={styles.sectionHead}>
             <h2 id="gui-heading" className={styles.sectionTitle}>Three ways to use the GUI</h2>
-            <p className={styles.sectionIntro}>In game as a window or a click GUI, or as a separate window next to Minecraft. Solid or glass.</p>
           </header>
           <GuiShowcase />
         </section>
@@ -279,18 +318,15 @@ export default function Home() {
 
         <section className={`${styles.section} ${styles.cta}`} aria-labelledby="cta-heading">
           <h2 id="cta-heading" className={styles.sectionTitle}>Download TorioGhost</h2>
-          <p className={styles.sectionIntro}>Free. Windows 10 and 11. Minecraft Bedrock 26.30 – 26.60.</p>
           <div className={`${styles.actions} ${styles.ctaActions}`}>
             <DownloadButton large exeUrl={exeUrl} zipUrl={zipUrl} latestUrl={latestUrl} />
             <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className={`${styles.button} ${styles.ghostButton}`}>Join the Discord</a>
           </div>
-          <p className={styles.safeNote}>
-            Antivirus warning? <Link href="/docs?category=start&module=IsItSafe">Why it happens and how to check the file</Link>
-          </p>
         </section>
       </main>
 
       <footer className={styles.footer}>
+        <WalkingChick />
         <div className={styles.footerInner}>
           <div className={styles.footerBrand}>
             <img src={asset('images/icon.png')} alt="" width={22} height={22} />
